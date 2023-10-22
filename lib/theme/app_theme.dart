@@ -22,6 +22,6 @@ ThemeData appTheme = ThemeData(
       ),
     ),
     colorScheme: ColorScheme.light(
-      background: Colors.grey.shade300,
+      background: Colors.grey.shade100,
       primary: const Color(0xff0071F0),
     ));

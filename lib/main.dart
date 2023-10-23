@@ -18,42 +18,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: appTheme,
-      home: LoginPage(),
-      // initialRoute: 'login',
-      // routes: routes,
-      onGenerateRoute: (RouteSettings settings) {
-        print(settings.name);
-        switch (settings.name) {
-          case 'login':
-            return SlideRightRoute(widget: const LoginPage());
-          case 'register':
-            return SlideRightRoute(widget: const RegisterPage());
-        }
-      },
+      initialRoute: 'home',
+      routes: routes,
     );
   }
-}
-
-class SlideRightRoute extends PageRouteBuilder {
-  final Widget widget;
-
-  SlideRightRoute({required this.widget})
-      : super(
-          pageBuilder: (BuildContext context, Animation<double> animation,
-              Animation<double> secondaryAnimation) {
-            return widget;
-          },
-          transitionsBuilder: (BuildContext context,
-              Animation<double> animation,
-              Animation<double> secondaryAnimation,
-              Widget child) {
-            return SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(1.0, 0.0),
-                end: Offset.zero,
-              ).animate(animation),
-              child: child,
-            );
-          },
-        );
 }

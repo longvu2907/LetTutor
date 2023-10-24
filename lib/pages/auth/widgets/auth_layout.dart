@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lettutor/widgets/custom_app_bar.dart';
 import 'package:lettutor/widgets/outlined_icon_button.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';

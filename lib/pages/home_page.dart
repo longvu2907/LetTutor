@@ -7,10 +7,18 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       appBar: CustomAppBar(),
-      body: Center(
-        child: TeacherCard(),
+      body: Container(
+        padding: const EdgeInsets.all(20),
+        child: ListView.separated(
+            itemBuilder: ((context, index) {
+              return TeacherCard();
+            }),
+            separatorBuilder: ((context, index) {
+              return const SizedBox(height: 20);
+            }),
+            itemCount: 10),
       ),
     );
   }

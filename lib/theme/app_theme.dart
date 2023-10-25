@@ -9,7 +9,7 @@ ThemeData appTheme = ThemeData(
         fontWeight: FontWeight.w500,
       ),
       titleLarge: TextStyle(
-        fontSize: 30,
+        fontSize: 24,
         fontWeight: FontWeight.w500,
       ),
       titleMedium: TextStyle(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/widgets/button.dart';
 import 'package:lettutor/widgets/rating.dart';
+import 'package:lettutor/widgets/tag.dart';
 
 class TeacherCard extends StatelessWidget {
   const TeacherCard({super.key});
@@ -93,32 +94,6 @@ class TeacherCard extends StatelessWidget {
             ],
           )
         ],
-      ),
-    );
-  }
-}
-
-class Tag extends StatelessWidget {
-  final String text;
-
-  const Tag({
-    super.key,
-    required this.text,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor.withOpacity(.1),
-        borderRadius: BorderRadius.circular(100),
-      ),
-      child: Text(
-        text,
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Theme.of(context).primaryColor,
-            ),
       ),
     );
   }

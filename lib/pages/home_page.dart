@@ -25,7 +25,6 @@ class HomePage extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const SizedBox(height: 10),
-
                   // Search bar
                   const Wrap(
                     spacing: 7,
@@ -51,7 +50,11 @@ class HomePage extends StatelessWidget {
                     primary: false,
                     shrinkWrap: true,
                     itemBuilder: ((context, index) {
-                      return const TeacherCard();
+                      return GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, 'teacher-detail');
+                          },
+                          child: const TeacherCard());
                     }),
                     separatorBuilder: ((context, index) {
                       return const SizedBox(height: 20);
@@ -64,7 +67,6 @@ class HomePage extends StatelessWidget {
                 ],
               ),
             ),
-            Footer(),
           ],
         ),
       ),

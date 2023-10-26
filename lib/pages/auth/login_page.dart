@@ -63,18 +63,20 @@ class _LoginPageState extends State<LoginPage> {
         ),
         const SizedBox(height: 10),
         Button(
-          text: 'Đăng ký',
-          onPressed: () {
-            _formKey.currentState?.save();
-            if (_formKey.currentState!.validate()) {
-              final formData = _formKey.currentState?.value;
-              print(formData);
-            }
-          },
+          text: 'Đăng nhập',
+          onPressed: _login,
           isFullWidth: true,
         ),
         const SizedBox(height: 40),
       ]),
     );
+  }
+
+  void _login() {
+    _formKey.currentState?.save();
+    if (_formKey.currentState!.validate()) {
+      final formData = _formKey.currentState?.value;
+      print(formData);
+    }
   }
 }

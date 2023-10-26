@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lettutor/widgets/button.dart';
 import 'package:lettutor/widgets/rating.dart';
 import 'package:lettutor/widgets/tag.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class TeacherCard extends StatelessWidget {
   const TeacherCard({super.key});
@@ -23,36 +24,45 @@ class TeacherCard extends StatelessWidget {
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Wrap(
-            crossAxisAlignment: WrapCrossAlignment.center,
-            spacing: 15,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CircleAvatar(
-                radius: 30,
-                backgroundImage: AssetImage('assets/images/teacher.jpg'),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Wrap(
+                spacing: 15,
                 children: [
-                  Text(
-                    'Teacher Name',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          height: 1.4,
-                        ),
+                  const CircleAvatar(
+                    radius: 30,
+                    backgroundImage: AssetImage('assets/images/teacher.jpg'),
                   ),
-                  Text(
-                    'Nationality',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.grey.shade600,
-                        ),
-                  ),
-                  const Rating(
-                    rating: 4.5,
-                    size: 18,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Teacher Name',
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  height: 1.4,
+                                ),
+                      ),
+                      Text(
+                        'Nationality',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: Colors.grey.shade600,
+                            ),
+                      ),
+                      const Rating(
+                        rating: 4.5,
+                        size: 18,
+                      ),
+                    ],
                   ),
                 ],
+              ),
+              Icon(
+                MdiIcons.heart,
+                color: Colors.red.shade300,
               ),
             ],
           ),

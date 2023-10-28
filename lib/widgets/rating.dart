@@ -15,7 +15,7 @@ class Rating extends StatelessWidget {
     for (int i = 0; i < 5; i++) {
       list.add(ValueFilledIcon(
         icon: Icons.star,
-        color: Colors.yellow,
+        color: Colors.yellow.shade700,
         value: rating - i,
         size: size,
       ));

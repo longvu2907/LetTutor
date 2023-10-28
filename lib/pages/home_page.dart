@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/widgets/custom_app_bar.dart';
-import 'package:lettutor/widgets/footer.dart';
 import 'package:lettutor/widgets/tag.dart';
 import 'package:lettutor/widgets/teacher_card.dart';
 
@@ -10,7 +9,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(),
+      appBar: const CustomAppBar(
+        showLogoutButton: true,
+      ),
       bottomNavigationBar: BottomAppBar(),
       body: SingleChildScrollView(
         child: Column(

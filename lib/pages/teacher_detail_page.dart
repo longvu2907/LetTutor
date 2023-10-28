@@ -3,6 +3,7 @@ import 'package:lettutor/widgets/custom_app_bar.dart';
 import 'package:lettutor/widgets/rating.dart';
 import 'package:lettutor/widgets/review.dart';
 import 'package:lettutor/widgets/tag.dart';
+import 'package:lettutor/widgets/video.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class TeacherDetailPage extends StatelessWidget {
@@ -71,12 +72,14 @@ class TeacherDetailPage extends StatelessWidget {
                         color: Colors.red.shade300,
                       ),
                     ),
-                    Text('Favorite',
-                        style: TextStyle(
-                          fontSize: 12,
-                          height: 0.4,
-                          color: Colors.red.shade300,
-                        ))
+                    Text(
+                      'Favorite',
+                      style: TextStyle(
+                        fontSize: 12,
+                        height: 0.4,
+                        color: Colors.red.shade300,
+                      ),
+                    )
                   ],
                 ),
                 Column(
@@ -100,6 +103,13 @@ class TeacherDetailPage extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 25),
+
+            // Video
+            const Video(
+              url:
+                  'https://api.app.lettutor.com/video/4d54d3d7-d2a9-42e5-97a2-5ed38af5789avideo1627913015871.mp4',
+              height: 200,
+            ),
 
             // Education
             Text(

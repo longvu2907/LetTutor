@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/widgets/custom_app_bar.dart';
+import 'package:lettutor/widgets/page_header.dart';
 import 'package:lettutor/widgets/schedule_card.dart';
 
 class SchedulePage extends StatelessWidget {
@@ -18,27 +19,11 @@ class SchedulePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Schedule header
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.9,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Schedule',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                    Text(
-                      'Here is a list of the sessions you have booked.',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    Text(
-                      'You can track when the meeting starts, join the meeting with one click or can cancel the meeting before 2 hours',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ],
-                ),
+              const PageHeader(
+                icon: Icons.calendar_today_outlined,
+                title: 'Schedule',
+                subtitle:
+                    'Here is a list of the sessions you have booked.\nYou can track when the meeting starts, join the meeting with one click or can cancel the meeting before 2 hours',
               ),
 
               // Schedule list
@@ -62,7 +47,7 @@ class SchedulePage extends StatelessWidget {
                   return const ScheduleCard();
                 },
                 separatorBuilder: (BuildContext context, int index) {
-                  return const SizedBox(height: 10);
+                  return const SizedBox(height: 20);
                 },
               ),
             ],

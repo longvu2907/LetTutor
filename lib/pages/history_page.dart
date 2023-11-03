@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/widgets/custom_app_bar.dart';
 import 'package:lettutor/widgets/history_card.dart';
+import 'package:lettutor/widgets/page_header.dart';
 
 class HistoryPage extends StatelessWidget {
   const HistoryPage({super.key});
@@ -18,27 +19,11 @@ class HistoryPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Schedule header
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.9,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'History',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                    Text(
-                      'The following is a list of lessons you have attended',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    Text(
-                      'You can review the details of the lessons you have attended',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ],
-                ),
+              const PageHeader(
+                icon: Icons.history,
+                title: 'History',
+                subtitle:
+                    'The following is a list of lessons you have attended\nYou can review the details of the lessons you have attended',
               ),
 
               // Schedule list
@@ -62,7 +47,7 @@ class HistoryPage extends StatelessWidget {
                   return const HistoryCard();
                 },
                 separatorBuilder: (BuildContext context, int index) {
-                  return const SizedBox(height: 10);
+                  return const SizedBox(height: 20);
                 },
               ),
             ],

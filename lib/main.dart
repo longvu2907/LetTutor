@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: appTheme,
-      initialRoute: 'schedule',
+      initialRoute: 'discover',
       routes: routes,
     );
   }

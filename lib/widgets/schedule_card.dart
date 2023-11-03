@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lettutor/widgets/rating.dart';
+import 'package:lettutor/widgets/button.dart';
+import 'package:lettutor/widgets/custom_expansion_tile.dart';
 
 class ScheduleCard extends StatelessWidget {
   const ScheduleCard({super.key});
@@ -25,7 +26,7 @@ class ScheduleCard extends StatelessWidget {
                     ),
               ),
               Text(
-                '5 months ago',
+                '1 lesson',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Colors.grey.shade600,
                     ),
@@ -52,9 +53,9 @@ class ScheduleCard extends StatelessWidget {
                     backgroundColor: Theme.of(context).colorScheme.primary,
                   ),
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Wrap(
+                  direction: Axis.vertical,
+                  spacing: 5,
                   children: [
                     Text(
                       'Joan Gacer',
@@ -102,26 +103,11 @@ class ScheduleCard extends StatelessWidget {
                 '21:00 - 21:25',
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
-              OutlinedButton(
+              Button(
+                text: 'Cancel',
                 onPressed: () {},
-                child: Text(
-                  'Cancel',
-                  style: TextStyle(
-                    color: Colors.red.shade400,
-                  ),
-                ),
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  side: MaterialStateProperty.all(
-                    BorderSide(
-                      color: Colors.red.shade400,
-                    ),
-                  ),
-                ),
+                color: ButtonColor.danger,
+                type: ButtonType.outlined,
               )
             ],
           ),
@@ -129,58 +115,15 @@ class ScheduleCard extends StatelessWidget {
             color: Colors.grey.shade300,
             thickness: 1,
           ),
-          const SizedBox(
-            height: 20,
-          ),
 
-          // Schedule detail
-          // Request
-          const Row(children: [
-            Text('No request for lesson'),
-          ]),
-          Divider(
-            color: Colors.grey.shade300,
-            thickness: 1,
-          ),
+          const CustomExpansionTile(),
 
-          // Reviews
-          const Row(children: [
-            Text("Tutor haven't reviewed yet"),
-          ]),
-          Divider(
-            color: Colors.grey.shade300,
-            thickness: 1,
-          ),
-
-          // Rating
-          const Row(children: [
-            Text('Rating: '),
-            Rating(rating: 5),
-          ]),
-          const SizedBox(
-            height: 5,
-          ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Text(
-                'Edit',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-              ),
-              Text(
-                'Report',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-              ),
+              Button(text: 'Go to meeting', onPressed: () {}),
             ],
-          ),
-          Divider(
-            color: Colors.grey.shade300,
-            thickness: 1,
-          ),
+          )
         ],
       ),
     );

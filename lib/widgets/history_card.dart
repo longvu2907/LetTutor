@@ -52,9 +52,9 @@ class HistoryCard extends StatelessWidget {
                     backgroundColor: Theme.of(context).colorScheme.primary,
                   ),
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Wrap(
+                  direction: Axis.vertical,
+                  spacing: 5,
                   children: [
                     Text(
                       'Joan Gacer',
@@ -154,10 +154,6 @@ class HistoryCard extends StatelessWidget {
                     ),
               ),
             ],
-          ),
-          Divider(
-            color: Colors.grey.shade300,
-            thickness: 1,
           ),
         ],
       ),

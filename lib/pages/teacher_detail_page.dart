@@ -110,6 +110,7 @@ class TeacherDetailPage extends StatelessWidget {
                   'https://api.app.lettutor.com/video/4d54d3d7-d2a9-42e5-97a2-5ed38af5789avideo1627913015871.mp4',
               height: 200,
             ),
+            const SizedBox(height: 25),
 
             // Education
             Text(
@@ -128,8 +129,8 @@ class TeacherDetailPage extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const Wrap(
-              spacing: 10,
-              runSpacing: 10,
+              spacing: 7,
+              runSpacing: 7,
               children: [
                 Tag(text: 'English'),
               ],
@@ -142,8 +143,8 @@ class TeacherDetailPage extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const Wrap(
-              spacing: 10,
-              runSpacing: 10,
+              spacing: 7,
+              runSpacing: 7,
               children: [
                 Tag(text: 'English for Business'),
                 Tag(text: 'English for kids'),

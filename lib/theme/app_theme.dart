@@ -20,8 +20,12 @@ ThemeData appTheme = ThemeData(
         fontSize: 14,
         fontWeight: FontWeight.w500,
       ),
-      bodyMedium: TextStyle(
+      bodyLarge: TextStyle(
         fontSize: 16,
+        fontWeight: FontWeight.w400,
+      ),
+      bodyMedium: TextStyle(
+        fontSize: 14,
         fontWeight: FontWeight.w400,
       ),
       bodySmall: TextStyle(

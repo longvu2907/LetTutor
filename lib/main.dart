@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:lettutor/pages/auth/register_page.dart';
-import 'package:lettutor/pages/auth/login_page.dart';
 import 'package:lettutor/routers/routes.dart';
 import 'package:lettutor/theme/app_theme.dart';
 
@@ -18,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: appTheme,
-      initialRoute: 'home',
+      initialRoute: 'schedule',
       routes: routes,
     );
   }

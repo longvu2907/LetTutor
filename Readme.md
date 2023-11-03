@@ -1,4 +1,4 @@
-# Lettutor - Advanced Mobile App Development
+# LetTutor - Advanced Mobile App Development
 
 ## Milestone 1: Mockup UI
 

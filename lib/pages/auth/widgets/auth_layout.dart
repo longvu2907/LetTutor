@@ -111,7 +111,11 @@ class AuthLayout extends StatelessWidget {
   }
 
   void _navigateTo(context) {
-    Navigator.pushNamed(context, navigateTo);
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      navigateTo,
+      (route) => false,
+    );
   }
 
   void _onPhoneTap() {

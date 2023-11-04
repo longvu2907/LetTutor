@@ -60,7 +60,9 @@ class CourseCard extends StatelessWidget {
             ButtonBar(
               children: [
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, 'course-detail');
+                  },
                   child: const Text('View'),
                 ),
                 TextButton(

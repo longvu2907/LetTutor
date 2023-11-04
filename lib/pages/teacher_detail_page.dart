@@ -185,12 +185,11 @@ class TeacherDetailPage extends StatelessWidget {
             ListView.separated(
               primary: false,
               shrinkWrap: true,
-              itemCount: 10,
+              itemCount: 5,
               itemBuilder: (context, index) {
                 return const Review(
                   name: 'name',
-                  content:
-                      ' 123 21 321 312 312 312 312 312 3213 21 312 312 321 312 321 312 312 ',
+                  content: 'Good',
                   rating: 4.5,
                   avatarUrl:
                       'https://sandbox.api.lettutor.com/avatar/cb9e7deb-3382-48db-b07c-90acf52f541cavatar1686550060378.jpg',

@@ -16,6 +16,12 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormBuilderState>();
 
   @override
+  void dispose() {
+    _formKey.currentState?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AuthLayout(
       title: 'Đăng nhập',
@@ -76,7 +82,11 @@ class _LoginPageState extends State<LoginPage> {
     _formKey.currentState?.save();
     if (_formKey.currentState!.validate()) {
       final formData = _formKey.currentState?.value;
-      print(formData);
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        'home',
+        (route) => false,
+      );
     }
   }
 }

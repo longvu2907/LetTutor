@@ -121,7 +121,12 @@ class ScheduleCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Button(text: 'Go to meeting', onPressed: () {}),
+              Button(
+                text: 'Go to meeting',
+                onPressed: () {
+                  Navigator.pushNamed(context, 'meeting');
+                },
+              ),
             ],
           )
         ],

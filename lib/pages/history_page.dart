@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/widgets/bottom_navigation.dart';
 import 'package:lettutor/widgets/custom_app_bar.dart';
 import 'package:lettutor/widgets/history_card.dart';
 import 'package:lettutor/widgets/page_header.dart';
@@ -10,7 +11,10 @@ class HistoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(
-        showBackButton: true,
+        showLogoutButton: true,
+      ),
+      bottomNavigationBar: const BottomNavigation(
+        currentIndex: 3,
       ),
       body: SingleChildScrollView(
         child: Padding(

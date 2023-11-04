@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/widgets/bottom_navigation.dart';
 import 'package:lettutor/widgets/course_card.dart';
 import 'package:lettutor/widgets/custom_app_bar.dart';
 import 'package:lettutor/widgets/page_header.dart';
@@ -30,13 +31,15 @@ class _DiscoverPageState extends State<DiscoverPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(
-        showBackButton: true,
+        showLogoutButton: true,
+      ),
+      bottomNavigationBar: const BottomNavigation(
+        currentIndex: 1,
       ),
       body: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.all(10),
           child: Column(
-            // mainAxisSize: MainAxisSize.min,
             children: [
               // discover course header
               const PageHeader(

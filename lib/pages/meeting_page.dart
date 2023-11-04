@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class VideoCallPage extends StatelessWidget {
-  const VideoCallPage({super.key});
+class MeetingPage extends StatelessWidget {
+  const MeetingPage({super.key});
 
   @override
   Widget build(BuildContext context) {

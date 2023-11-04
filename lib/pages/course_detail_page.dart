@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/widgets/button.dart';
 import 'package:lettutor/widgets/custom_app_bar.dart';
-import 'package:lettutor/widgets/page_header.dart';
 
 class CourseDetailPage extends StatelessWidget {
   const CourseDetailPage({super.key});
@@ -49,7 +48,9 @@ class CourseDetailPage extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Button(
                         text: 'Discover',
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, 'lesson-detail');
+                        },
                         isFullWidth: true,
                       ),
                     ),
@@ -67,13 +68,16 @@ class CourseDetailPage extends StatelessWidget {
               ),
 
               // course overview
+              const SizedBox(height: 20),
               Text(
                 'Overview',
-                style: Theme.of(context).textTheme.titleLarge,
+                style: Theme.of(context).textTheme.titleMedium,
               ),
               Text(
                 'Why take this course',
-                style: Theme.of(context).textTheme.titleMedium,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
               ),
               Text(
                 'Our world is rapidly changing thanks to new technology, and the vocabulary needed to discuss modern life is evolving almost daily. In this course you will learn the most up-to-date terminology from expertly crafted lessons as well from your native-speaking tutor.',
@@ -81,37 +85,46 @@ class CourseDetailPage extends StatelessWidget {
               ),
               Text(
                 'What will you be able to do',
-                style: Theme.of(context).textTheme.titleMedium,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
               ),
               Text(
                 'You will learn vocabulary related to timely topics like remote work, artificial intelligence, online privacy, and more. In addition to discussion questions, you will practice intermediate level speaking tasks such as using data to describe trends.',
                 style: Theme.of(context).textTheme.bodySmall,
               ),
+              const SizedBox(height: 20),
 
               // course level
               Text(
                 'Experience Level',
-                style: Theme.of(context).textTheme.titleLarge,
+                style: Theme.of(context).textTheme.titleMedium,
               ),
               Text(
                 'Intermediate',
-                style: Theme.of(context).textTheme.titleMedium,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
               ),
+              const SizedBox(height: 20),
 
               // course length
               Text(
                 'Course Length',
-                style: Theme.of(context).textTheme.titleLarge,
+                style: Theme.of(context).textTheme.titleMedium,
               ),
               Text(
                 '9 topics',
-                style: Theme.of(context).textTheme.titleMedium,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
               ),
+              const SizedBox(height: 20),
 
               // topics
               Text(
                 'List Topics',
-                style: Theme.of(context).textTheme.titleLarge,
+                style: Theme.of(context).textTheme.titleMedium,
               ),
               ListView.separated(
                 shrinkWrap: true,
@@ -119,10 +132,18 @@ class CourseDetailPage extends StatelessWidget {
                 itemCount: 10,
                 itemBuilder: (context, index) {
                   return ListTile(
+                    onTap: () {
+                      Navigator.pushNamed(context, 'lesson-detail');
+                    },
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     tileColor: Colors.grey.shade200,
                     title: Text(
                       '$index. The Internet',
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w500,
+                          ),
                     ),
                   );
                 },
@@ -132,15 +153,18 @@ class CourseDetailPage extends StatelessWidget {
                   );
                 },
               ),
+              const SizedBox(height: 20),
 
               // suggested tutors
               Text(
                 'Suggested Tutors',
-                style: Theme.of(context).textTheme.titleLarge,
+                style: Theme.of(context).textTheme.titleMedium,
               ),
               Text(
                 'Keegan',
-                style: Theme.of(context).textTheme.titleMedium,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
               ),
             ],
           ),

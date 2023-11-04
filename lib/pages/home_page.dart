@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/widgets/bottom_navigation.dart';
 import 'package:lettutor/widgets/custom_app_bar.dart';
 import 'package:lettutor/widgets/tag.dart';
 import 'package:lettutor/widgets/teacher_card.dart';
@@ -12,7 +13,9 @@ class HomePage extends StatelessWidget {
       appBar: const CustomAppBar(
         showLogoutButton: true,
       ),
-      bottomNavigationBar: BottomAppBar(),
+      bottomNavigationBar: const BottomNavigation(
+        currentIndex: 0,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -51,11 +54,7 @@ class HomePage extends StatelessWidget {
                     primary: false,
                     shrinkWrap: true,
                     itemBuilder: ((context, index) {
-                      return GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(context, 'teacher-detail');
-                          },
-                          child: const TeacherCard());
+                      return const TeacherCard();
                     }),
                     separatorBuilder: ((context, index) {
                       return const SizedBox(height: 20);

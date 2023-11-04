@@ -17,13 +17,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedPage = 0;
 
-  final _pageOptions = const [
-    TutorListPage(),
-    DiscoverPage(),
-    SchedulePage(),
-    HistoryPage(),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +47,15 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: _pageOptions[_selectedPage],
+      body: IndexedStack(
+        index: _selectedPage,
+        children: const [
+          TutorListPage(),
+          DiscoverPage(),
+          SchedulePage(),
+          HistoryPage(),
+        ],
+      ),
     );
   }
 

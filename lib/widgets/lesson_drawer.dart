@@ -40,7 +40,9 @@ class LessonDrawer extends StatelessWidget {
           const SizedBox(height: 20),
           Text(
             'List Topics',
-            style: Theme.of(context).textTheme.titleLarge,
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
           ),
           ListView.separated(
             shrinkWrap: true,

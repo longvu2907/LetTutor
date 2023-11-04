@@ -7,7 +7,7 @@ enum ButtonColor { primary, danger }
 class Button extends StatelessWidget {
   final bool isFullWidth;
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final bool rounded;
   final double? width;
   final ButtonType type;

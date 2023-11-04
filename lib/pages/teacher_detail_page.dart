@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lettutor/widgets/custom_app_bar.dart';
 import 'package:lettutor/widgets/rating.dart';
 import 'package:lettutor/widgets/review.dart';
+import 'package:lettutor/widgets/table_event.dart';
 import 'package:lettutor/widgets/tag.dart';
 import 'package:lettutor/widgets/video.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -203,6 +204,8 @@ class TeacherDetailPage extends StatelessWidget {
               },
             ),
             const SizedBox(height: 10),
+
+            TableEventsExample(),
           ],
         ),
       ),

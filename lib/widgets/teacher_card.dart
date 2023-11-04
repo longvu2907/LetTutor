@@ -97,7 +97,7 @@ class TeacherCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Button(
-                text: 'Đặt lịch',
+                text: 'Book',
                 onPressed: () => Navigator.pushNamed(context, 'teacher-detail'),
                 rounded: true,
               ),

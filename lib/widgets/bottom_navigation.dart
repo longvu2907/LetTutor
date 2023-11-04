@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 
 class BottomNavigation extends StatelessWidget {
-  final int currentIndex;
-
   const BottomNavigation({
     super.key,
-    required this.currentIndex,
   });
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      currentIndex: currentIndex,
       onTap: (index) {
         _onNavigationBarTap(index, context);
       },
@@ -39,7 +35,7 @@ class BottomNavigation extends StatelessWidget {
   }
 
   _onNavigationBarTap(int index, BuildContext context) {
-    if (index == currentIndex) return;
+    // if (index == currentIndex) return;
 
     String dest;
 

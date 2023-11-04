@@ -48,7 +48,7 @@ class AuthLayout extends StatelessWidget {
               ),
               const SizedBox(height: 5),
               Text(
-                'Phát triển kỹ năng tiếng Anh nhanh nhất bằng cách học 1 kèm 1 trực tuyến theo mục tiêu và lộ trình dành cho riêng bạn.',
+                'Become fluent faster through one on one video chat lessons tailored to your goals.',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodySmall,
               ),
@@ -59,7 +59,7 @@ class AuthLayout extends StatelessWidget {
 
               // Or login with vendor
               Text(
-                'Hoặc tiếp tục với',
+                'Or continue with',
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               const SizedBox(height: 10),

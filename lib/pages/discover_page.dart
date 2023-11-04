@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lettutor/widgets/bottom_navigation.dart';
 import 'package:lettutor/widgets/course_card.dart';
 import 'package:lettutor/widgets/custom_app_bar.dart';
+import 'package:lettutor/widgets/main_layout.dart';
 import 'package:lettutor/widgets/page_header.dart';
 
 class DiscoverPage extends StatefulWidget {
@@ -29,48 +30,39 @@ class _DiscoverPageState extends State<DiscoverPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomAppBar(
-        showLogoutButton: true,
-      ),
-      bottomNavigationBar: const BottomNavigation(
-        currentIndex: 1,
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          margin: const EdgeInsets.all(10),
-          child: Column(
-            children: [
-              // discover course header
-              const PageHeader(
-                icon: Icons.manage_search,
-                title: 'Discover Courses',
-                subtitle:
-                    'Discover the courses that are right for you\nYou can search for courses by subject, level, or teacher',
-              ),
-              const SizedBox(height: 20),
+    return SingleChildScrollView(
+      child: Container(
+        margin: const EdgeInsets.all(10),
+        child: Column(
+          children: [
+            // discover course header
+            const PageHeader(
+              title: 'Discover Courses',
+              subtitle:
+                  'Discover the courses that are right for you\nYou can search for courses by subject, level, or teacher',
+            ),
+            const SizedBox(height: 20),
 
-              TabBar(
-                isScrollable: true,
-                controller: _tabController,
-                onTap: (index) => setState(() {}),
-                tabs: const [
-                  Tab(
-                    text: 'Course',
-                  ),
-                  Tab(
-                    text: 'E-Book',
-                  ),
-                  Tab(
-                    text: 'Interactive E-Book',
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
+            TabBar(
+              isScrollable: true,
+              controller: _tabController,
+              onTap: (index) => setState(() {}),
+              tabs: const [
+                Tab(
+                  text: 'Course',
+                ),
+                Tab(
+                  text: 'E-Book',
+                ),
+                Tab(
+                  text: 'Interactive E-Book',
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
 
-              _buildTabView(_activeIndex),
-            ],
-          ),
+            _buildTabView(_activeIndex),
+          ],
         ),
       ),
     );

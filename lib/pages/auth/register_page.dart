@@ -20,10 +20,10 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return AuthLayout(
-      title: 'Đăng ký',
+      title: 'Sign up',
       navigateTo: 'login',
-      bottomText: 'Đã có tài khoản?',
-      navigateToText: 'Đăng nhập',
+      bottomText: 'Already have an account?',
+      navigateToText: 'Log in',
       child: _registerForm(),
     );
   }
@@ -63,13 +63,13 @@ class _RegisterPageState extends State<RegisterPage> {
             FormBuilderValidators.required(),
             FormBuilderValidators.equal(
               _password,
-              errorText: 'Mật khẩu không khớp',
+              errorText: 'Password not match!',
             ),
           ]),
         ),
         const SizedBox(height: 25),
         Button(
-          text: 'Đăng ký',
+          text: 'Sign up',
           onPressed: () {
             _formKey.currentState?.save();
             if (_formKey.currentState!.validate()) {

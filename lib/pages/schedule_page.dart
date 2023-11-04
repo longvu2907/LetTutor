@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/widgets/bottom_navigation.dart';
 import 'package:lettutor/widgets/custom_app_bar.dart';
+import 'package:lettutor/widgets/main_layout.dart';
 import 'package:lettutor/widgets/page_header.dart';
 import 'package:lettutor/widgets/schedule_card.dart';
 
@@ -9,53 +10,44 @@ class SchedulePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomAppBar(
-        showLogoutButton: true,
-      ),
-      bottomNavigationBar: const BottomNavigation(
-        currentIndex: 2,
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Schedule header
-              const PageHeader(
-                icon: Icons.calendar_today_outlined,
-                title: 'Schedule',
-                subtitle:
-                    'Here is a list of the sessions you have booked.\nYou can track when the meeting starts, join the meeting with one click or can cancel the meeting before 2 hours',
-              ),
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Schedule header
+            const PageHeader(
+              title: 'Schedule',
+              subtitle:
+                  'Here is a list of the sessions you have booked.\nYou can track when the meeting starts, join the meeting with one click or can cancel the meeting before 2 hours',
+            ),
 
-              // Schedule list
-              const SizedBox(
-                height: 25,
-              ),
-              Text(
-                'Latest Book',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
+            // Schedule list
+            const SizedBox(
+              height: 25,
+            ),
+            Text(
+              'Latest Book',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
 
-              // Booking card list
-              ListView.separated(
-                padding: const EdgeInsets.only(top: 10),
-                primary: false,
-                shrinkWrap: true,
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return const ScheduleCard();
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return const SizedBox(height: 20);
-                },
-              ),
-            ],
-          ),
+            // Booking card list
+            ListView.separated(
+              padding: const EdgeInsets.only(top: 10),
+              primary: false,
+              shrinkWrap: true,
+              itemCount: 5,
+              itemBuilder: (context, index) {
+                return const ScheduleCard();
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return const SizedBox(height: 20);
+              },
+            ),
+          ],
         ),
       ),
     );

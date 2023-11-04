@@ -24,10 +24,10 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return AuthLayout(
-      title: 'Đăng nhập',
+      title: 'Login',
       navigateTo: 'register',
-      bottomText: 'Chưa có tài khoản?',
-      navigateToText: 'Đăng ký',
+      bottomText: 'Not a member yet?',
+      navigateToText: 'Sign up',
       child: _registerForm(),
     );
   }
@@ -40,8 +40,9 @@ class _LoginPageState extends State<LoginPage> {
           name: 'email',
           labelText: "Email",
           validator: FormBuilderValidators.compose([
-            FormBuilderValidators.required(errorText: 'Vui lòng nhập email'),
-            FormBuilderValidators.email(errorText: 'Email không hợp lệ'),
+            FormBuilderValidators.required(
+                errorText: 'Please input your Email!'),
+            FormBuilderValidators.email(errorText: 'Email not valid!'),
           ]),
         ),
         const SizedBox(height: 20),
@@ -50,7 +51,8 @@ class _LoginPageState extends State<LoginPage> {
           labelText: "Password",
           isPasswordField: true,
           validator: FormBuilderValidators.compose([
-            FormBuilderValidators.required(errorText: 'Vui lòng nhập mật khẩu'),
+            FormBuilderValidators.required(
+                errorText: 'Please input your Password!'),
           ]),
         ),
         const SizedBox(height: 15),
@@ -59,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
           child: Row(
             children: [
               Text(
-                'Quên mật khẩu?',
+                'Forgot Password?',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Theme.of(context).colorScheme.primary,
                     ),
@@ -69,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         const SizedBox(height: 10),
         Button(
-          text: 'Đăng nhập',
+          text: 'Login',
           onPressed: _login,
           isFullWidth: true,
         ),

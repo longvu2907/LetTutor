@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/pages/auth/login_page.dart';
 import 'package:lettutor/pages/auth/register_page.dart';
+import 'package:lettutor/pages/course_detail_page.dart';
 import 'package:lettutor/pages/discover_page.dart';
 import 'package:lettutor/pages/history_page.dart';
 import 'package:lettutor/pages/home_page.dart';
+import 'package:lettutor/pages/lesson_detail_page.dart';
 import 'package:lettutor/pages/schedule_page.dart';
 import 'package:lettutor/pages/teacher_detail_page.dart';
 
@@ -15,4 +17,6 @@ Map<String, WidgetBuilder> routes = {
   'schedule': (context) => const SchedulePage(),
   'history': (context) => const HistoryPage(),
   'discover': (context) => const DiscoverPage(),
+  'course-detail': (context) => const CourseDetailPage(),
+  'lesson-detail': (context) => const LessonDetailPage(),
 };

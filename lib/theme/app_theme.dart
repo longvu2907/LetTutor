@@ -5,7 +5,7 @@ ThemeData appTheme = ThemeData(
     fontFamily: 'Roboto',
     textTheme: const TextTheme(
       displayLarge: TextStyle(
-        fontSize: 30,
+        fontSize: 28,
         fontWeight: FontWeight.w500,
       ),
       titleLarge: TextStyle(

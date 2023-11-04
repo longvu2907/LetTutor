@@ -4,11 +4,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showBackButton;
   final bool showLogoutButton;
+  final Widget? prefix;
+  final Widget? suffix;
 
   const CustomAppBar({
     super.key,
     this.showBackButton = false,
     this.showLogoutButton = false,
+    this.prefix,
+    this.suffix,
   });
 
   @override
@@ -16,6 +20,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       centerTitle: true,
       automaticallyImplyLeading: showBackButton, // hide back button
+      leading: prefix,
       actions: showLogoutButton
           ? [
               GestureDetector(

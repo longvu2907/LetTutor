@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: appTheme,
-      initialRoute: 'lesson-detail',
+      initialRoute: 'video-call',
       routes: routes,
     );
   }

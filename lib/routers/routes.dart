@@ -8,6 +8,7 @@ import 'package:lettutor/pages/home_page.dart';
 import 'package:lettutor/pages/lesson_detail_page.dart';
 import 'package:lettutor/pages/schedule_page.dart';
 import 'package:lettutor/pages/teacher_detail_page.dart';
+import 'package:lettutor/pages/video_call_page.dart';
 
 Map<String, WidgetBuilder> routes = {
   'login': (context) => const LoginPage(),
@@ -19,4 +20,5 @@ Map<String, WidgetBuilder> routes = {
   'discover': (context) => const DiscoverPage(),
   'course-detail': (context) => const CourseDetailPage(),
   'lesson-detail': (context) => const LessonDetailPage(),
+  'video-call': (context) => const VideoCallPage(),
 };

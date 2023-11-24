@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:lettutor/models/user.dart';
 import 'package:lettutor/pages/auth/widgets/auth_layout.dart';
+import 'package:lettutor/services/auth.dart';
 import 'package:lettutor/widgets/button.dart';
 import 'package:lettutor/widgets/text_input.dart';
 
@@ -14,6 +16,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormBuilderState>();
+  String _errorMessage = '';
 
   @override
   void dispose() {
@@ -55,6 +58,18 @@ class _LoginPageState extends State<LoginPage> {
                 errorText: 'Please input your Password!'),
           ]),
         ),
+        const SizedBox(height: 5),
+        Row(
+          children: [
+            Text(
+              _errorMessage,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall
+                  ?.copyWith(color: Colors.red),
+            ),
+          ],
+        ),
         const SizedBox(height: 15),
         GestureDetector(
           onTap: () {},
@@ -84,11 +99,27 @@ class _LoginPageState extends State<LoginPage> {
     _formKey.currentState?.save();
     if (_formKey.currentState!.validate()) {
       final formData = _formKey.currentState?.value;
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        'home',
-        (route) => false,
-      );
+
+      if (formData != null) {
+        Future<User> user = login(formData['email'], formData['password']);
+
+        user.then(
+          (value) {
+            print(value);
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              'home',
+              (route) => false,
+            );
+          },
+          onError: (error) {
+            setState(() {
+              _errorMessage = error.toString();
+            });
+            print(error);
+          },
+        );
+      }
     }
   }
 }

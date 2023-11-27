@@ -14,6 +14,7 @@ class Button extends StatelessWidget {
   final ButtonColor color;
   final Widget? prefix;
   final Widget? suffix;
+  final bool isLoading;
 
   const Button({
     super.key,
@@ -21,6 +22,7 @@ class Button extends StatelessWidget {
     required this.onPressed,
     this.isFullWidth = false,
     this.rounded = false,
+    this.isLoading = false,
     this.type = ButtonType.filled,
     this.color = ButtonColor.primary,
     this.width,
@@ -62,7 +64,17 @@ class Button extends StatelessWidget {
               ),
             ),
           ),
-          child: Text(text),
+          child: isLoading
+              ? Container(
+                  width: 20,
+                  height: 20,
+                  padding: const EdgeInsets.all(2.0),
+                  child: const CircularProgressIndicator(
+                    color: Colors.white,
+                    strokeWidth: 3,
+                  ),
+                )
+              : Text(text),
         );
 
       // Outlined button
@@ -87,12 +99,22 @@ class Button extends StatelessWidget {
               return Colors.transparent;
             }),
           ),
-          child: Text(
-            text,
-            style: TextStyle(
-              color: buttonColor,
-            ),
-          ),
+          child: isLoading
+              ? Container(
+                  width: 20,
+                  height: 20,
+                  padding: const EdgeInsets.all(2.0),
+                  child: const CircularProgressIndicator(
+                    color: Colors.white,
+                    strokeWidth: 3,
+                  ),
+                )
+              : Text(
+                  text,
+                  style: TextStyle(
+                    color: buttonColor,
+                  ),
+                ),
         );
     }
   }

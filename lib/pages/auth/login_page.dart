@@ -6,6 +6,7 @@ import 'package:lettutor/pages/auth/widgets/auth_layout.dart';
 import 'package:lettutor/services/auth.dart';
 import 'package:lettutor/widgets/button.dart';
 import 'package:lettutor/widgets/text_input.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -17,6 +18,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormBuilderState>();
   String _errorMessage = '';
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -89,36 +91,37 @@ class _LoginPageState extends State<LoginPage> {
           text: 'Login',
           onPressed: _login,
           isFullWidth: true,
+          isLoading: _isLoading,
         ),
         const SizedBox(height: 40),
       ]),
     );
   }
 
-  void _login() {
+  void _login() async {
+    // var userRepository = context.watch<User>();
     _formKey.currentState?.save();
     if (_formKey.currentState!.validate()) {
       final formData = _formKey.currentState?.value;
 
       if (formData != null) {
-        Future<User> user = login(formData['email'], formData['password']);
+        try {
+          setState(() {
+            _isLoading = true;
+          });
+          User user = await login(formData['email'], formData['password']);
 
-        user.then(
-          (value) {
-            print(value);
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              'home',
-              (route) => false,
-            );
-          },
-          onError: (error) {
-            setState(() {
-              _errorMessage = error.toString();
-            });
-            print(error);
-          },
-        );
+          print(user.avatar);
+        } catch (e) {
+          print(e);
+          setState(() {
+            _errorMessage = e.toString();
+          });
+        }
+
+        setState(() {
+          _isLoading = false;
+        });
       }
     }
   }

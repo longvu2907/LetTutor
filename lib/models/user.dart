@@ -1,15 +1,17 @@
-class User {
-  final String id;
-  final String email;
-  final String name;
-  final String avatar;
-  final String country;
-  final String phone;
-  final List<String> roles;
-  final String? language;
-  final DateTime birthday;
-  final bool isActivated;
-  final String level;
+import 'package:flutter/material.dart';
+
+class User extends ChangeNotifier {
+  String id;
+  String email;
+  String name;
+  String avatar;
+  String country;
+  String phone;
+  List<String> roles;
+  String? language;
+  DateTime birthday;
+  bool isActivated;
+  String level;
 
   User({
     required this.id,
@@ -38,4 +40,21 @@ class User {
         isActivated: json['isActivated'],
         level: json['level'],
       );
+
+  void setUser(User? user) {
+    if (user != null) {
+      id = user.id;
+      email = user.email;
+      name = user.name;
+      avatar = user.avatar;
+      country = user.country;
+      phone = user.phone;
+      roles = user.roles;
+      language = user.language;
+      birthday = user.birthday;
+      isActivated = user.isActivated;
+      level = user.level;
+    }
+    notifyListeners();
+  }
 }

@@ -17,6 +17,6 @@ Future<User> login(String email, String password) async {
   if (response.statusCode == 200) {
     return User.fromJson(json.decode(response.body)['user']);
   } else {
-    throw Exception(json.decode(response.body)['message']);
+    throw (json.decode(response.body)['message']);
   }
 }

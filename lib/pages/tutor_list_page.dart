@@ -1,10 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/models/auth.dart';
+import 'package:lettutor/models/user.dart';
+import 'package:lettutor/services/tutor.dart';
 import 'package:lettutor/widgets/page_header.dart';
 import 'package:lettutor/widgets/tag.dart';
 import 'package:lettutor/widgets/teacher_card.dart';
+import 'package:provider/provider.dart';
 
-class TutorListPage extends StatelessWidget {
+class TutorListPage extends StatefulWidget {
   const TutorListPage({super.key});
+
+  @override
+  State<TutorListPage> createState() => _TutorListPageState();
+}
+
+class _TutorListPageState extends State<TutorListPage> {
+  List<User> _tutors = [];
+
+  @override
+  void initState() {
+    getTutor(accessToken: context.read<Auth>().accessToken.toString()).then(
+      (value) => setState(() {
+        print(value.length);
+        _tutors = value;
+      }),
+    );
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,12 +70,12 @@ class TutorListPage extends StatelessWidget {
                   primary: false,
                   shrinkWrap: true,
                   itemBuilder: ((context, index) {
-                    return const TeacherCard();
+                    return TeacherCard(userData: _tutors[index]);
                   }),
                   separatorBuilder: ((context, index) {
                     return const SizedBox(height: 20);
                   }),
-                  itemCount: 5,
+                  itemCount: _tutors.length,
                 ),
 
                 // Footer

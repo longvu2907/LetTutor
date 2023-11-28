@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/models/user.dart';
 import 'package:lettutor/widgets/button.dart';
 import 'package:lettutor/widgets/rating.dart';
 import 'package:lettutor/widgets/tag.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class TeacherCard extends StatelessWidget {
-  const TeacherCard({super.key});
+  final User userData;
+
+  const TeacherCard({
+    super.key,
+    required this.userData,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -32,30 +38,38 @@ class TeacherCard extends StatelessWidget {
               Wrap(
                 spacing: 15,
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     radius: 30,
-                    backgroundImage: AssetImage('assets/images/teacher.jpg'),
+                    backgroundImage: NetworkImage(userData.avatar!),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Teacher Name',
+                        userData.name!,
                         style:
                             Theme.of(context).textTheme.titleMedium?.copyWith(
                                   height: 1.4,
                                 ),
                       ),
                       Text(
-                        'Nationality',
+                        userData.country!,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               color: Colors.grey.shade600,
                             ),
                       ),
-                      const Rating(
-                        rating: 4.5,
-                        size: 18,
-                      ),
+                      userData.rating != null
+                          ? Rating(
+                              rating: userData.rating ?? 0,
+                              size: 18,
+                            )
+                          : const Text(
+                              'No reviews yet',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
                     ],
                   ),
                 ],
@@ -69,27 +83,25 @@ class TeacherCard extends StatelessWidget {
           const SizedBox(height: 10),
 
           // Tags
-          const Wrap(
-            spacing: 7,
-            runSpacing: 7,
-            children: [
-              Tag(text: 'IELTS'),
-              Tag(text: 'TOEFL'),
-              Tag(text: 'TOEIC'),
-              Tag(text: 'TOEIC'),
-              Tag(text: 'TOEIC'),
-              Tag(text: 'TOEIC'),
-              Tag(text: 'TOEIC'),
-            ],
+          Align(
+            alignment: Alignment.topLeft,
+            child: Wrap(
+              spacing: 7,
+              runSpacing: 7,
+              children: userData.specialties.map((e) => Tag(text: e)).toList(),
+            ),
           ),
           const SizedBox(height: 15),
 
           //Description
-          Text(
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nisl eget nunc aliquam aliquet. Sed vitae nisl eget nunc aliquam aliquet.',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.grey.shade600,
-                ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              userData.bio ?? '',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Colors.grey.shade600,
+                  ),
+            ),
           ),
 
           // Button

@@ -54,7 +54,7 @@ class Button extends StatelessWidget {
       // Filled button
       case ButtonType.filled:
         return FilledButton(
-          onPressed: onPressed,
+          onPressed: isLoading ? null : onPressed,
           style: ButtonStyle(
             shape: MaterialStatePropertyAll(
               RoundedRectangleBorder(
@@ -80,7 +80,7 @@ class Button extends StatelessWidget {
       // Outlined button
       case ButtonType.outlined:
         return OutlinedButton(
-          onPressed: () {},
+          onPressed: isLoading ? null : onPressed,
           style: ButtonStyle(
             shape: MaterialStateProperty.all(
               RoundedRectangleBorder(

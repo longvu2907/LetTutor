@@ -5,17 +5,17 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 class AuthLayout extends StatelessWidget {
   final String title;
-  final String bottomText;
-  final String navigateTo;
-  final String navigateToText;
+  final String? bottomText;
+  final String? navigateTo;
+  final String? navigateToText;
   final Widget child;
 
   const AuthLayout({
     super.key,
     required this.title,
-    required this.bottomText,
-    required this.navigateTo,
-    required this.navigateToText,
+    this.bottomText,
+    this.navigateTo,
+    this.navigateToText,
     required this.child,
   });
 
@@ -58,51 +58,61 @@ class AuthLayout extends StatelessWidget {
               child,
 
               // Or login with vendor
-              Text(
-                'Or continue with',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
+
+              navigateToText != null
+                  ? Text(
+                      'Or continue with',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    )
+                  : Container(),
               const SizedBox(height: 10),
-              Wrap(
-                children: [
-                  OutlinedIconButton(
-                    icon: MdiIcons.facebook,
-                    onPressed: _onFacebookTap,
-                  ),
-                  OutlinedIconButton(
-                    icon: MdiIcons.google,
-                    onPressed: _onGoogleTap,
-                  ),
-                  OutlinedIconButton(
-                    icon: Icons.phone_android,
-                    onPressed: _onPhoneTap,
-                  ),
-                ],
-              ),
+              navigateToText != null
+                  ? Wrap(
+                      children: [
+                        OutlinedIconButton(
+                          icon: MdiIcons.facebook,
+                          onPressed: _onFacebookTap,
+                        ),
+                        OutlinedIconButton(
+                          icon: MdiIcons.google,
+                          onPressed: _onGoogleTap,
+                        ),
+                        OutlinedIconButton(
+                          icon: Icons.phone_android,
+                          onPressed: _onPhoneTap,
+                        ),
+                      ],
+                    )
+                  : Container(),
               const SizedBox(height: 20),
 
               // Register
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '$bottomText ',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      _navigateTo(context);
-                    },
-                    child: Text(
-                      navigateToText,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.w700,
+              navigateToText != null
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '$bottomText ',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            _navigateTo(context);
+                          },
+                          child: Text(
+                            navigateToText ?? '',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall
+                                ?.copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  fontWeight: FontWeight.w700,
+                                ),
                           ),
-                    ),
-                  ),
-                ],
-              )
+                        ),
+                      ],
+                    )
+                  : Container(),
             ],
           ),
         ),
@@ -113,7 +123,7 @@ class AuthLayout extends StatelessWidget {
   void _navigateTo(context) {
     Navigator.pushNamedAndRemoveUntil(
       context,
-      navigateTo,
+      navigateTo ?? '',
       (route) => false,
     );
   }

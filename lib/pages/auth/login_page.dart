@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:lettutor/models/user.dart';
+import 'package:lettutor/models/auth.dart';
 import 'package:lettutor/pages/auth/widgets/auth_layout.dart';
 import 'package:lettutor/services/auth.dart';
 import 'package:lettutor/widgets/button.dart';
@@ -57,7 +57,8 @@ class _LoginPageState extends State<LoginPage> {
           isPasswordField: true,
           validator: FormBuilderValidators.compose([
             FormBuilderValidators.required(
-                errorText: 'Please input your Password!'),
+              errorText: 'Please input your Password!',
+            ),
           ]),
         ),
         const SizedBox(height: 5),
@@ -74,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         const SizedBox(height: 15),
         GestureDetector(
-          onTap: () {},
+          onTap: () => Navigator.pushNamed(context, 'forgot-password'),
           child: Row(
             children: [
               Text(
@@ -98,30 +99,34 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _login() async {
-    // var userRepository = context.watch<User>();
+  void _login() {
+    var authData = context.read<Auth>();
     _formKey.currentState?.save();
     if (_formKey.currentState!.validate()) {
       final formData = _formKey.currentState?.value;
 
       if (formData != null) {
-        try {
-          setState(() {
-            _isLoading = true;
-          });
-          User user = await login(formData['email'], formData['password']);
-
-          print(user.avatar);
-        } catch (e) {
-          print(e);
-          setState(() {
-            _errorMessage = e.toString();
-          });
-        }
-
         setState(() {
-          _isLoading = false;
+          _isLoading = true;
         });
+        Future<Auth> res = login(formData['email'], formData['password'])
+            .whenComplete(() => setState(() {
+                  _isLoading = false;
+                }));
+
+        res.then(
+          (auth) {
+            authData.setAuth(auth);
+            Navigator.pushNamedAndRemoveUntil(
+                context, 'home', (route) => false);
+          },
+        ).catchError(
+          (e) {
+            setState(() {
+              _errorMessage = e.toString();
+            });
+          },
+        );
       }
     }
   }

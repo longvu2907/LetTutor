@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/pages/auth/forgot_password_page.dart';
 import 'package:lettutor/pages/auth/login_page.dart';
 import 'package:lettutor/pages/auth/register_page.dart';
 import 'package:lettutor/pages/course_detail_page.dart';
@@ -13,6 +14,7 @@ import 'package:lettutor/pages/tutor_list_page.dart';
 
 Map<String, WidgetBuilder> routes = {
   'login': (context) => const LoginPage(),
+  'forgot-password': (context) => const ForgotPasswordPage(),
   'register': (context) => const RegisterPage(),
   'home': (context) => const HomePage(),
   'teacher-detail': (context) => const TeacherDetailPage(),

@@ -7,9 +7,8 @@ import 'package:lettutor/pages/discover_page.dart';
 import 'package:lettutor/pages/history_page.dart';
 import 'package:lettutor/pages/home_page.dart';
 import 'package:lettutor/pages/lesson_detail_page.dart';
-import 'package:lettutor/pages/schedule_page.dart';
-import 'package:lettutor/pages/teacher_detail_page.dart';
 import 'package:lettutor/pages/meeting_page.dart';
+import 'package:lettutor/pages/schedule_page.dart';
 import 'package:lettutor/pages/tutor_list_page.dart';
 
 Map<String, WidgetBuilder> routes = {
@@ -17,7 +16,7 @@ Map<String, WidgetBuilder> routes = {
   'forgot-password': (context) => const ForgotPasswordPage(),
   'register': (context) => const RegisterPage(),
   'home': (context) => const HomePage(),
-  'teacher-detail': (context) => const TeacherDetailPage(),
+  // 'teacher-detail': (context) => const TeacherDetailPage(),
   'schedule': (context) => const SchedulePage(),
   'history': (context) => const HistoryPage(),
   'discover': (context) => const DiscoverPage(),

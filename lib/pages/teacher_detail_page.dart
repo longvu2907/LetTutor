@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/models/auth.dart';
+import 'package:lettutor/models/user.dart';
+import 'package:lettutor/services/tutor.dart';
 import 'package:lettutor/widgets/custom_app_bar.dart';
 import 'package:lettutor/widgets/rating.dart';
 import 'package:lettutor/widgets/review.dart';
@@ -6,9 +9,40 @@ import 'package:lettutor/widgets/table_event.dart';
 import 'package:lettutor/widgets/tag.dart';
 import 'package:lettutor/widgets/video.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 
-class TeacherDetailPage extends StatelessWidget {
-  const TeacherDetailPage({super.key});
+class TeacherDetailPage extends StatefulWidget {
+  final String userId;
+
+  const TeacherDetailPage({
+    super.key,
+    required this.userId,
+  });
+
+  @override
+  State<TeacherDetailPage> createState() => _TeacherDetailPageState();
+}
+
+class _TeacherDetailPageState extends State<TeacherDetailPage> {
+  User? _userData;
+
+  @override
+  void initState() {
+    getTutor(
+      accessToken: context.read<Auth>().accessToken.toString(),
+      id: widget.userId,
+    ).then(
+      (value) {
+        setState(() {
+          _userData = value;
+        });
+      },
+    ).catchError((error) {
+      print(error);
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +59,9 @@ class TeacherDetailPage extends StatelessWidget {
             Wrap(
               spacing: 15,
               children: [
-                const CircleAvatar(
+                CircleAvatar(
                   radius: 30,
-                  backgroundImage: AssetImage('assets/images/teacher.jpg'),
+                  backgroundImage: NetworkImage(_userData?.avatar ?? ''),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

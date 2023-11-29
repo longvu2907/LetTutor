@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:lettutor/models/auth.dart';
 import 'package:lettutor/pages/auth/widgets/auth_layout.dart';
-import 'package:lettutor/services/auth.dart';
 import 'package:lettutor/widgets/button.dart';
 import 'package:lettutor/widgets/text_input.dart';
-import 'package:provider/provider.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});

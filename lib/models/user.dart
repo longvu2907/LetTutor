@@ -13,6 +13,8 @@ class User {
   double? rating;
   String? bio;
   List<String> specialties;
+  bool isFavoriteTutor;
+  String? video;
 
   User({
     this.id,
@@ -29,6 +31,8 @@ class User {
     this.rating,
     this.bio,
     this.specialties = const [],
+    this.isFavoriteTutor = false,
+    this.video,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -53,6 +57,8 @@ class User {
               ?.map<String>((e) => e.toString())
               .toList()
           : [],
+      isFavoriteTutor: json['isFavoriteTutor'] != null,
+      video: json['video'],
     );
   }
 }

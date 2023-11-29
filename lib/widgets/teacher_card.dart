@@ -75,7 +75,9 @@ class TeacherCard extends StatelessWidget {
                 ],
               ),
               Icon(
-                MdiIcons.heart,
+                userData.isFavoriteTutor!
+                    ? MdiIcons.heart
+                    : MdiIcons.heartOutline,
                 color: Colors.red.shade300,
               ),
             ],
@@ -110,7 +112,11 @@ class TeacherCard extends StatelessWidget {
             children: [
               Button(
                 text: 'Book',
-                onPressed: () => Navigator.pushNamed(context, 'teacher-detail'),
+                onPressed: () => Navigator.pushNamed(
+                  context,
+                  'teacher-detail',
+                  arguments: userData.id,
+                ),
                 rounded: true,
               ),
             ],

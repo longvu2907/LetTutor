@@ -16,15 +16,35 @@ class TutorListPage extends StatefulWidget {
 
 class _TutorListPageState extends State<TutorListPage> {
   List<User> _tutors = [];
+  final List<String> _specialties = [
+    'All',
+    "English for kids",
+    "English for business",
+    "Conversational",
+    "STARTERS",
+    "MOVERS",
+    "FLYERS",
+    "KET",
+    "PET",
+    "IELTS",
+    "TOEFL",
+    "TOEIC",
+  ];
 
-  @override
-  void initState() {
-    getTutor(accessToken: context.read<Auth>().accessToken.toString()).then(
+  void updateTutorList() {
+    getTutorList(
+      accessToken: context.read<Auth>().accessToken.toString(),
+      query: TutorSearchQuery(search: "Kee"),
+    ).then(
       (value) => setState(() {
-        print(value.length);
         _tutors = value;
       }),
     );
+  }
+
+  @override
+  void initState() {
+    updateTutorList();
 
     super.initState();
   }
@@ -46,17 +66,15 @@ class _TutorListPageState extends State<TutorListPage> {
                 ),
                 const SizedBox(height: 10),
                 // Search bar
-                const Wrap(
+                Wrap(
                   spacing: 7,
                   runSpacing: 7,
-                  children: [
-                    Tag(text: 'IELTS'),
-                    Tag(text: 'TOEFL', selected: false),
-                    Tag(text: 'TOEFL', selected: false),
-                    Tag(text: 'TOEFL', selected: false),
-                    Tag(text: 'TOEFL', selected: false),
-                    Tag(text: 'TOEFL', selected: false),
-                  ],
+                  children: _specialties
+                      .map((e) => Tag(
+                            text: e,
+                            selected: false,
+                          ))
+                      .toList(),
                 ),
                 const SizedBox(height: 20),
 

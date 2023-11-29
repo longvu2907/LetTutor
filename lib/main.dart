@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/models/auth.dart';
+import 'package:lettutor/pages/teacher_detail_page.dart';
 import 'package:lettutor/routers/routes.dart';
 import 'package:lettutor/theme/app_theme.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +22,19 @@ class MyApp extends StatelessWidget {
         theme: appTheme,
         initialRoute: 'home',
         routes: routes,
+        onGenerateRoute: (settings) {
+          if (settings.name == 'teacher-detail') {
+            final args = settings.arguments as String;
+
+            return MaterialPageRoute(
+              builder: (context) {
+                return TeacherDetailPage(
+                  userId: args,
+                );
+              },
+            );
+          }
+        },
       ),
     );
   }

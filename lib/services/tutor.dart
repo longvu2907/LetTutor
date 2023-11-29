@@ -30,11 +30,13 @@ class TutorSearchQuery {
   TutorFilters? filters;
   final int page;
   final int perPage;
+  final String? search;
 
   TutorSearchQuery({
     this.page = 1,
-    this.perPage = 5,
+    this.perPage = 50,
     TutorFilters? filters,
+    this.search,
   }) {
     this.filters = filters ?? TutorFilters();
   }
@@ -44,11 +46,12 @@ class TutorSearchQuery {
       'page': page,
       'perPage': perPage,
       'filters': filters?.toJson(),
+      'search': search,
     };
   }
 }
 
-Future<List<User>> getTutor({
+Future<List<User>> getTutorList({
   TutorSearchQuery? query,
   required String accessToken,
 }) async {
@@ -68,6 +71,23 @@ Future<List<User>> getTutor({
     List<User> res = List<User>.from(l.map((e) => User.fromJson(e)));
 
     return res;
+  } else {
+    throw (json.decode(response.body)['message']);
+  }
+}
+
+Future<User> getTutor({
+  required String id,
+  required String accessToken,
+}) async {
+  var url = Uri.https('sandbox.api.lettutor.com', '/tutor/$id');
+
+  var response = await get(
+    url,
+  );
+
+  if (response.statusCode == 200) {
+    return User.fromJson(json.decode(response.body));
   } else {
     throw (json.decode(response.body)['message']);
   }

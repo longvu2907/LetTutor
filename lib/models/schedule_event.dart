@@ -12,11 +12,16 @@ class ScheduleEvent {
   });
 
   factory ScheduleEvent.fromJson(Map<String, dynamic> json) {
+    int startTimestamp = json['startTimestamp'] ??
+        json['scheduleDetailInfo']['startPeriodTimestamp'];
+    int endTimestamp = json['endTimestamp'] ??
+        json['scheduleDetailInfo']['endPeriodTimestamp'];
+
     return ScheduleEvent(
-      id: json['scheduleDetails'][0]['id'],
-      start: DateTime.fromMillisecondsSinceEpoch(json['startTimestamp']),
-      end: DateTime.fromMillisecondsSinceEpoch(json['endTimestamp']),
-      isBooked: json['isBooked'],
+      id: json['scheduleDetailId'] ?? json['scheduleDetails'][0]['id'],
+      start: DateTime.fromMillisecondsSinceEpoch(startTimestamp),
+      end: DateTime.fromMillisecondsSinceEpoch(endTimestamp),
+      isBooked: json['isBooked'] ?? false,
     );
   }
 

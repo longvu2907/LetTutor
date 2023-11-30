@@ -2,9 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:lettutor/models/auth.dart';
-import 'package:lettutor/models/tutor.dart';
 import 'package:lettutor/models/user.dart';
+import 'package:lettutor/services/booking.dart';
 import 'package:lettutor/services/tutor.dart';
+import 'package:lettutor/widgets/button.dart';
 import 'package:lettutor/widgets/page_header.dart';
 import 'package:lettutor/widgets/tag.dart';
 import 'package:lettutor/widgets/teacher_card.dart';
@@ -39,6 +40,14 @@ class _TutorListPageState extends State<TutorListPage> {
   ];
   Timer? _timer;
   bool _isLoading = false;
+  int _totalTime = 0;
+
+  String transformMinutesToString(int minutes) {
+    int hours = minutes ~/ 60;
+    int mins = minutes % 60;
+
+    return "${hours} hours ${mins} minutes";
+  }
 
   void updateTutorList() {
     _isLoading = true;
@@ -66,6 +75,13 @@ class _TutorListPageState extends State<TutorListPage> {
     super.initState();
 
     updateTutorList();
+    getTotalLearningTime(
+            accessToken: context.read<Auth>().accessToken.toString())
+        .then((value) {
+      setState(() {
+        _totalTime = value;
+      });
+    });
   }
 
   @override
@@ -73,6 +89,58 @@ class _TutorListPageState extends State<TutorListPage> {
     return SingleChildScrollView(
       child: Column(
         children: [
+          // Upcoming class
+          Container(
+            height: 225,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            child: Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Upcoming lesson',
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge
+                        ?.copyWith(color: Colors.white),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'Fri, 01 Dec 23 01:30 - 01:55',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.copyWith(color: Colors.white),
+                  ),
+                  Text(
+                    '(starts in 00:12:14)',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.copyWith(color: Colors.yellowAccent),
+                  ),
+                  Button(
+                    text: 'Enter lesson room',
+                    onPressed: () {},
+                    color: ButtonColor.white,
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Total lesson time is ${transformMinutesToString(_totalTime)}',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.copyWith(color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
           Padding(
             padding: const EdgeInsets.all(10),
             child: Column(

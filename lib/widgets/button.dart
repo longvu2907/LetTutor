@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 enum ButtonType { filled, outlined }
 
-enum ButtonColor { primary, danger }
+enum ButtonColor { primary, danger, white }
 
 class Button extends StatelessWidget {
   final bool isFullWidth;
@@ -46,6 +46,9 @@ class Button extends StatelessWidget {
       case ButtonColor.danger:
         buttonColor = Colors.red.shade400;
         break;
+      case ButtonColor.white:
+        buttonColor = Colors.white;
+        break;
       default:
         buttonColor = Theme.of(context).colorScheme.primary;
     }
@@ -56,6 +59,7 @@ class Button extends StatelessWidget {
         return FilledButton(
           onPressed: isLoading ? null : onPressed,
           style: ButtonStyle(
+            backgroundColor: MaterialStatePropertyAll(buttonColor),
             shape: MaterialStatePropertyAll(
               RoundedRectangleBorder(
                 borderRadius: rounded
@@ -74,7 +78,11 @@ class Button extends StatelessWidget {
                     strokeWidth: 3,
                   ),
                 )
-              : Text(text),
+              : Text(text,
+                  style: TextStyle(
+                      color: color == ButtonColor.white
+                          ? Theme.of(context).colorScheme.primary
+                          : Colors.white)),
         );
 
       // Outlined button

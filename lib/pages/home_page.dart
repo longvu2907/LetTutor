@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lettutor/models/user.dart';
 import 'package:lettutor/pages/discover_page.dart';
 import 'package:lettutor/pages/history_page.dart';
 import 'package:lettutor/pages/schedule_page.dart';

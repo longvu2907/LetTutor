@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 import 'package:lettutor/models/review.dart';
+import 'package:lettutor/models/schedule_event.dart';
 import 'package:lettutor/models/tutor.dart';
 import 'package:lettutor/models/user.dart';
 
@@ -113,14 +114,89 @@ Future<List<ReviewModel>> getReviews({
     },
   );
 
-  print(response.body);
-
   if (response.statusCode == 200) {
     Iterable l = json.decode(response.body)['data']['rows'];
     List<ReviewModel> res =
         List<ReviewModel>.from(l.map((e) => ReviewModel.fromJson(e)));
 
     return res;
+  } else {
+    throw (json.decode(response.body)['message']);
+  }
+}
+
+Future<List<ScheduleEvent>> getSchedules({
+  required String tutorId,
+  required String accessToken,
+}) async {
+  var url = Uri.https('sandbox.api.lettutor.com', '/schedule', {
+    'tutorId': tutorId,
+    'page': "0",
+  });
+
+  var response = await get(
+    url,
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $accessToken",
+    },
+  );
+
+  if (response.statusCode == 200) {
+    Iterable l = json.decode(response.body)['scheduleOfTutor'];
+    List<ScheduleEvent> res =
+        List<ScheduleEvent>.from(l.map((e) => ScheduleEvent.fromJson(e)));
+
+    return res;
+  } else {
+    throw (json.decode(response.body)['message']);
+  }
+}
+
+Future<void> bookSchedule({
+  required String tutorId,
+  required String accessToken,
+  required String scheduleId,
+}) async {
+  var url = Uri.https('sandbox.api.lettutor.com', '/booking');
+
+  var response = await post(
+    url,
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $accessToken",
+    },
+    body: jsonEncode({
+      'scheduleDetailIds': [scheduleId],
+    }),
+  );
+
+  if (response.statusCode == 200) {
+    return;
+  } else {
+    throw (json.decode(response.body)['message']);
+  }
+}
+
+Future<void> manageFavoriteTutor({
+  required String tutorId,
+  required String accessToken,
+}) async {
+  var url = Uri.https('sandbox.api.lettutor.com', '/user/manageFavoriteTutor');
+
+  var response = await post(
+    url,
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $accessToken",
+    },
+    body: jsonEncode({
+      'tutorId': tutorId,
+    }),
+  );
+
+  if (response.statusCode == 200) {
+    return;
   } else {
     throw (json.decode(response.body)['message']);
   }

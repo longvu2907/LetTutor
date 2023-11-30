@@ -28,8 +28,7 @@ class _TeacherDetailPageState extends State<TeacherDetailPage> {
   Tutor? tutorData;
   List<ReviewModel> feedbacks = [];
 
-  @override
-  void initState() {
+  void updateTutor() {
     getTutor(
       accessToken: context.read<Auth>().accessToken.toString(),
       tutorId: widget.tutorId,
@@ -42,7 +41,9 @@ class _TeacherDetailPageState extends State<TeacherDetailPage> {
     ).catchError((error) {
       print(error);
     });
+  }
 
+  void updateReview() {
     getReviews(
       accessToken: context.read<Auth>().accessToken.toString(),
       tutorId: widget.tutorId,
@@ -55,8 +56,22 @@ class _TeacherDetailPageState extends State<TeacherDetailPage> {
     ).catchError((error) {
       print(error);
     });
+  }
 
+  void toggleFavorite() {
+    manageFavoriteTutor(
+      tutorId: widget.tutorId,
+      accessToken: context.read<Auth>().accessToken.toString(),
+    );
+    updateTutor();
+  }
+
+  @override
+  void initState() {
     super.initState();
+
+    updateTutor();
+    updateReview();
   }
 
   @override
@@ -115,7 +130,7 @@ class _TeacherDetailPageState extends State<TeacherDetailPage> {
                 Column(
                   children: [
                     IconButton(
-                      onPressed: () {},
+                      onPressed: toggleFavorite,
                       icon: Icon(
                         tutorData?.isFavorite == true
                             ? MdiIcons.heart
@@ -227,7 +242,14 @@ class _TeacherDetailPageState extends State<TeacherDetailPage> {
             const SizedBox(height: 20),
 
             // Schedule
-            TableEventsExample(),
+            Text(
+              'Schedule',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            ScheduleTable(
+              tutorId: widget.tutorId,
+            ),
+            const SizedBox(height: 20),
 
             // Others review
             Text(

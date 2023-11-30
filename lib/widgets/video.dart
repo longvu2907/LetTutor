@@ -36,6 +36,23 @@ class _VideoState extends State<Video> {
   }
 
   @override
+  void didUpdateWidget(covariant Video oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    _controller = VideoPlayerController.networkUrl(
+      Uri.parse(
+        widget.url,
+      ),
+    );
+
+    _controller.addListener(() {
+      setState(() {});
+    });
+    _controller.setLooping(true);
+    _controller.initialize().then((_) => setState(() {}));
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();

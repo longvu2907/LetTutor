@@ -1,3 +1,4 @@
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:lettutor/models/user.dart';
 import 'package:lettutor/widgets/button.dart';
@@ -53,7 +54,7 @@ class TeacherCard extends StatelessWidget {
                                 ),
                       ),
                       Text(
-                        userData.country!,
+                        '${Country.tryParse(userData.country ?? '')!.flagEmoji} ${Country.tryParse(userData.country ?? '')!.name}',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               color: Colors.grey.shade600,
                             ),
@@ -75,7 +76,7 @@ class TeacherCard extends StatelessWidget {
                 ],
               ),
               Icon(
-                userData.isFavoriteTutor!
+                userData.isFavoriteTutor
                     ? MdiIcons.heart
                     : MdiIcons.heartOutline,
                 color: Colors.red.shade300,

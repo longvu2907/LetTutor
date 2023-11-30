@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(
               builder: (context) {
                 return TeacherDetailPage(
-                  userId: args,
+                  tutorId: args,
                 );
               },
             );

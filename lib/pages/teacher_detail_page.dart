@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/models/auth.dart';
-import 'package:lettutor/models/user.dart';
+import 'package:lettutor/models/review.dart';
+import 'package:lettutor/models/tutor.dart';
 import 'package:lettutor/services/tutor.dart';
 import 'package:lettutor/widgets/custom_app_bar.dart';
 import 'package:lettutor/widgets/rating.dart';
@@ -12,11 +13,11 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:provider/provider.dart';
 
 class TeacherDetailPage extends StatefulWidget {
-  final String userId;
+  final String tutorId;
 
   const TeacherDetailPage({
     super.key,
-    required this.userId,
+    required this.tutorId,
   });
 
   @override
@@ -24,17 +25,31 @@ class TeacherDetailPage extends StatefulWidget {
 }
 
 class _TeacherDetailPageState extends State<TeacherDetailPage> {
-  User? _userData;
+  Tutor? tutorData;
+  List<ReviewModel> feedbacks = [];
 
   @override
   void initState() {
     getTutor(
       accessToken: context.read<Auth>().accessToken.toString(),
-      id: widget.userId,
+      tutorId: widget.tutorId,
     ).then(
       (value) {
         setState(() {
-          _userData = value;
+          tutorData = value;
+        });
+      },
+    ).catchError((error) {
+      print(error);
+    });
+
+    getReviews(
+      accessToken: context.read<Auth>().accessToken.toString(),
+      tutorId: widget.tutorId,
+    ).then(
+      (value) {
+        setState(() {
+          feedbacks = value;
         });
       },
     ).catchError((error) {
@@ -61,25 +76,25 @@ class _TeacherDetailPageState extends State<TeacherDetailPage> {
               children: [
                 CircleAvatar(
                   radius: 30,
-                  backgroundImage: NetworkImage(_userData?.avatar ?? ''),
+                  backgroundImage: NetworkImage(tutorData?.user?.avatar ?? ''),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Teacher Name',
+                      tutorData?.user?.name ?? '',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             height: 1.4,
                           ),
                     ),
                     Text(
-                      'Nationality',
+                      tutorData?.user?.country ?? '',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: Colors.grey.shade600,
                           ),
                     ),
-                    const Rating(
-                      rating: 4.5,
+                    Rating(
+                      rating: tutorData?.rating ?? 0,
                       size: 18,
                     ),
                   ],
@@ -88,7 +103,7 @@ class _TeacherDetailPageState extends State<TeacherDetailPage> {
             ),
             const SizedBox(height: 15),
             Text(
-              "Hi, My name is Jill I am an experienced English Teacher from Philippine. I would like to share my enthusiasm with the learners in this platform. I've been working with diverse learners of all levels for many years. I am greatly passionate about about profession. I love teaching because I can help others improve their skills and it gives me joy and excitement meeting different learners around the world. In my class I worked with wonderful enthusiasm and positivity, and I'm happy to focus on my learner's goal.",
+              tutorData?.bio ?? '',
               style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 10),
@@ -102,7 +117,9 @@ class _TeacherDetailPageState extends State<TeacherDetailPage> {
                     IconButton(
                       onPressed: () {},
                       icon: Icon(
-                        MdiIcons.heart,
+                        tutorData?.isFavorite == true
+                            ? MdiIcons.heart
+                            : MdiIcons.heartOutline,
                         size: 28,
                         color: Colors.red.shade300,
                       ),
@@ -140,9 +157,8 @@ class _TeacherDetailPageState extends State<TeacherDetailPage> {
             const SizedBox(height: 25),
 
             // Video
-            const Video(
-              url:
-                  'https://api.app.lettutor.com/video/4d54d3d7-d2a9-42e5-97a2-5ed38af5789avideo1627913015871.mp4',
+            Video(
+              url: tutorData?.video ?? '',
               height: 200,
             ),
             const SizedBox(height: 25),
@@ -153,7 +169,7 @@ class _TeacherDetailPageState extends State<TeacherDetailPage> {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             Text(
-              'Certified at English education',
+              tutorData?.education ?? '',
               style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 10),
@@ -163,12 +179,13 @@ class _TeacherDetailPageState extends State<TeacherDetailPage> {
               'Languages',
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            const Wrap(
+            Wrap(
               spacing: 7,
               runSpacing: 7,
-              children: [
-                Tag(text: 'English'),
-              ],
+              children: tutorData?.languages
+                      ?.map((e) => Tag(text: e.toUpperCase()))
+                      .toList() ??
+                  const [],
             ),
             const SizedBox(height: 10),
 
@@ -177,15 +194,13 @@ class _TeacherDetailPageState extends State<TeacherDetailPage> {
               'Specialties',
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            const Wrap(
+            Wrap(
               spacing: 7,
               runSpacing: 7,
-              children: [
-                Tag(text: 'English for Business'),
-                Tag(text: 'English for kids'),
-                Tag(text: 'TOEFL'),
-                Tag(text: 'TOEIC'),
-              ],
+              children: tutorData?.specialties
+                      ?.map((e) => Tag(text: e.toUpperCase()))
+                      .toList() ??
+                  const [],
             ),
             const SizedBox(height: 10),
 
@@ -195,7 +210,7 @@ class _TeacherDetailPageState extends State<TeacherDetailPage> {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             Text(
-              'English, Japanese, Korean, Chinese',
+              tutorData?.interests ?? '',
               style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 10),
@@ -206,10 +221,13 @@ class _TeacherDetailPageState extends State<TeacherDetailPage> {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             Text(
-              '5 years in education',
+              tutorData?.experience ?? '',
               style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 20),
+
+            // Schedule
+            TableEventsExample(),
 
             // Others review
             Text(
@@ -220,14 +238,13 @@ class _TeacherDetailPageState extends State<TeacherDetailPage> {
             ListView.separated(
               primary: false,
               shrinkWrap: true,
-              itemCount: 5,
+              itemCount: feedbacks.length,
               itemBuilder: (context, index) {
-                return const Review(
-                  name: 'name',
-                  content: 'Good',
-                  rating: 4.5,
-                  avatarUrl:
-                      'https://sandbox.api.lettutor.com/avatar/cb9e7deb-3382-48db-b07c-90acf52f541cavatar1686550060378.jpg',
+                return Review(
+                  name: feedbacks[index].name,
+                  content: feedbacks[index].content,
+                  rating: feedbacks[index].rating,
+                  avatarUrl: feedbacks[index].avatar,
                 );
               },
               separatorBuilder: (BuildContext context, int index) {
@@ -238,8 +255,6 @@ class _TeacherDetailPageState extends State<TeacherDetailPage> {
               },
             ),
             const SizedBox(height: 10),
-
-            TableEventsExample(),
           ],
         ),
       ),

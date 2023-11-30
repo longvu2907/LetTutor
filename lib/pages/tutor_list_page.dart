@@ -34,19 +34,22 @@ class _TutorListPageState extends State<TutorListPage> {
   void updateTutorList() {
     getTutorList(
       accessToken: context.read<Auth>().accessToken.toString(),
-      query: TutorSearchQuery(search: "Kee"),
-    ).then(
+    )
+        .then(
       (value) => setState(() {
         _tutors = value;
       }),
-    );
+    )
+        .catchError((error) {
+      print(error);
+    });
   }
 
   @override
   void initState() {
-    updateTutorList();
-
     super.initState();
+
+    updateTutorList();
   }
 
   @override

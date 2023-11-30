@@ -46,6 +46,7 @@ dependencies:
   syncfusion_flutter_pdfviewer: ^23.1.43
   table_calendar: ^3.0.9
   provider: ^6.1.1
+  country_picker: ^2.0.22
 
 dev_dependencies:
   flutter_test:

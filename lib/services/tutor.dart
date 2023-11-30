@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
+import 'package:lettutor/models/review.dart';
+import 'package:lettutor/models/tutor.dart';
 import 'package:lettutor/models/user.dart';
 
 class TutorFilters {
@@ -46,7 +48,7 @@ class TutorSearchQuery {
       'page': page,
       'perPage': perPage,
       'filters': filters?.toJson(),
-      'search': search,
+      // 'search': search,
     };
   }
 }
@@ -76,18 +78,49 @@ Future<List<User>> getTutorList({
   }
 }
 
-Future<User> getTutor({
-  required String id,
+Future<Tutor> getTutor({
+  required String tutorId,
   required String accessToken,
 }) async {
-  var url = Uri.https('sandbox.api.lettutor.com', '/tutor/$id');
+  var url = Uri.https('sandbox.api.lettutor.com', '/tutor/$tutorId');
 
   var response = await get(
     url,
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $accessToken",
+    },
   );
 
   if (response.statusCode == 200) {
-    return User.fromJson(json.decode(response.body));
+    return Tutor.fromJson(json.decode(response.body));
+  } else {
+    throw (json.decode(response.body)['message']);
+  }
+}
+
+Future<List<ReviewModel>> getReviews({
+  required String tutorId,
+  required String accessToken,
+}) async {
+  var url = Uri.https('sandbox.api.lettutor.com', '/feedback/v2/$tutorId');
+
+  var response = await get(
+    url,
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $accessToken",
+    },
+  );
+
+  print(response.body);
+
+  if (response.statusCode == 200) {
+    Iterable l = json.decode(response.body)['data']['rows'];
+    List<ReviewModel> res =
+        List<ReviewModel>.from(l.map((e) => ReviewModel.fromJson(e)));
+
+    return res;
   } else {
     throw (json.decode(response.body)['message']);
   }

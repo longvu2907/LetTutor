@@ -17,24 +17,27 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [ChangeNotifierProvider<Auth?>(create: (context) => Auth())],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: appTheme,
-        initialRoute: 'home',
-        routes: routes,
-        onGenerateRoute: (settings) {
-          if (settings.name == 'teacher-detail') {
-            final args = settings.arguments as String;
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: appTheme,
+          initialRoute: 'home',
+          routes: routes,
+          onGenerateRoute: (settings) {
+            if (settings.name == 'teacher-detail') {
+              final args = settings.arguments as String;
 
-            return MaterialPageRoute(
-              builder: (context) {
-                return TeacherDetailPage(
-                  tutorId: args,
-                );
-              },
-            );
-          }
-        },
+              return MaterialPageRoute(
+                builder: (context) {
+                  return TeacherDetailPage(
+                    tutorId: args,
+                  );
+                },
+              );
+            }
+          },
+        ),
       ),
     );
   }

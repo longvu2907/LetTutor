@@ -54,7 +54,7 @@ class TeacherCard extends StatelessWidget {
                                 ),
                       ),
                       Text(
-                        '${Country.tryParse(userData.country ?? '')!.flagEmoji} ${Country.tryParse(userData.country ?? '')!.name}',
+                        '${Country.tryParse(userData.country ?? '')?.flagEmoji ?? ""} ${Country.tryParse(userData.country ?? '')?.name ?? userData.country}',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               color: Colors.grey.shade600,
                             ),

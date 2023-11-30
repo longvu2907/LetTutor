@@ -6,10 +6,10 @@ import 'package:lettutor/models/tutor.dart';
 import 'package:lettutor/models/user.dart';
 
 class TutorFilters {
-  final DateTime? date;
-  final Object nationality;
-  final List<String> specialties;
-  final List<DateTime?> tutoringTimeAvailable;
+  DateTime? date;
+  Object nationality;
+  List<String> specialties;
+  List<DateTime?> tutoringTimeAvailable;
 
   TutorFilters({
     this.date,
@@ -30,13 +30,13 @@ class TutorFilters {
 
 class TutorSearchQuery {
   TutorFilters? filters;
-  final int page;
-  final int perPage;
-  final String? search;
+  int page;
+  int perPage;
+  String? search;
 
   TutorSearchQuery({
     this.page = 1,
-    this.perPage = 50,
+    this.perPage = 10,
     TutorFilters? filters,
     this.search,
   }) {
@@ -48,7 +48,7 @@ class TutorSearchQuery {
       'page': page,
       'perPage': perPage,
       'filters': filters?.toJson(),
-      // 'search': search,
+      'search': search ?? "",
     };
   }
 }

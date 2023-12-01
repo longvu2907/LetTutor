@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/models/auth.dart';
+import 'package:lettutor/pages/course_detail_page.dart';
 import 'package:lettutor/pages/teacher_detail_page.dart';
 import 'package:lettutor/routers/routes.dart';
 import 'package:lettutor/theme/app_theme.dart';
@@ -32,6 +33,17 @@ class MyApp extends StatelessWidget {
                 builder: (context) {
                   return TeacherDetailPage(
                     tutorId: args,
+                  );
+                },
+              );
+            }
+            if (settings.name == 'course-detail') {
+              final args = settings.arguments as String;
+
+              return MaterialPageRoute(
+                builder: (context) {
+                  return CourseDetailPage(
+                    courseId: args,
                   );
                 },
               );

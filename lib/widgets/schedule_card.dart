@@ -1,9 +1,17 @@
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:lettutor/models/schedule_event.dart';
 import 'package:lettutor/widgets/button.dart';
 import 'package:lettutor/widgets/custom_expansion_tile.dart';
 
 class ScheduleCard extends StatelessWidget {
-  const ScheduleCard({super.key});
+  final ScheduleEvent schedule;
+
+  const ScheduleCard({
+    super.key,
+    required this.schedule,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +28,7 @@ class ScheduleCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Tue, 02 May 23',
+                DateFormat('E, dd MMM yy').format(schedule.start),
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       fontWeight: FontWeight.w500,
                     ),
@@ -47,8 +55,8 @@ class ScheduleCard extends StatelessWidget {
                   margin: const EdgeInsets.only(right: 15),
                   child: CircleAvatar(
                     radius: 35,
-                    backgroundImage: const NetworkImage(
-                      'https://api.app.lettutor.com/avatar/8c4e58c4-e9d1-4353-b64d-41b573c5a3e9avatar1632284832414.jpg',
+                    backgroundImage: NetworkImage(
+                      schedule.tutor?.avatar ?? "",
                     ),
                     backgroundColor: Theme.of(context).colorScheme.primary,
                   ),
@@ -58,13 +66,13 @@ class ScheduleCard extends StatelessWidget {
                   spacing: 5,
                   children: [
                     Text(
-                      'Joan Gacer',
+                      schedule.tutor?.name ?? "",
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             fontWeight: FontWeight.w500,
                           ),
                     ),
                     Text(
-                      'Taiwan',
+                      '${Country.tryParse(schedule.tutor?.country ?? '')?.flagEmoji ?? ""} ${Country.tryParse(schedule.tutor?.country ?? '')?.name ?? schedule.tutor?.country}',
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                     Row(
@@ -100,7 +108,7 @@ class ScheduleCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '21:00 - 21:25',
+                schedule.toString(),
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               Button(

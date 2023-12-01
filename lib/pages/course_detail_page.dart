@@ -1,9 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/models/auth.dart';
+import 'package:lettutor/models/course.dart';
+import 'package:lettutor/services/course.dart';
 import 'package:lettutor/widgets/button.dart';
 import 'package:lettutor/widgets/custom_app_bar.dart';
+import 'package:provider/provider.dart';
 
-class CourseDetailPage extends StatelessWidget {
-  const CourseDetailPage({super.key});
+class CourseDetailPage extends StatefulWidget {
+  final String courseId;
+
+  const CourseDetailPage({
+    super.key,
+    required this.courseId,
+  });
+
+  @override
+  State<CourseDetailPage> createState() => _CourseDetailPageState();
+}
+
+class _CourseDetailPageState extends State<CourseDetailPage> {
+  CourseModel? _courseData;
+
+  void getCourseData() async {
+    var res = await getCourse(
+      accessToken: context.read<Auth>().accessToken.toString(),
+      courseId: widget.courseId,
+    );
+
+    setState(() {
+      _courseData = res;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    getCourseData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,19 +60,19 @@ class CourseDetailPage extends StatelessWidget {
                       width: double.infinity,
                       height: 200,
                       child: Image.network(
-                        'https://camblycurriculumicons.s3.amazonaws.com/5e0e8b212ac750e7dc9886ac?h=d41d8cd98f00b204e9800998ecf8427e',
+                        _courseData?.image ?? "",
                         fit: BoxFit.cover,
                       ),
                     ),
                     ListTile(
                       title: Text(
-                        'Life in the Internet Age',
+                        _courseData?.name ?? "",
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                       ),
                       subtitle: Text(
-                        "Let's discuss how technology is changing the way we live",
+                        _courseData?.description ?? "",
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               color: Colors.grey.shade600,
                             ),
@@ -80,7 +114,7 @@ class CourseDetailPage extends StatelessWidget {
                     ),
               ),
               Text(
-                'Our world is rapidly changing thanks to new technology, and the vocabulary needed to discuss modern life is evolving almost daily. In this course you will learn the most up-to-date terminology from expertly crafted lessons as well from your native-speaking tutor.',
+                _courseData?.reason ?? "",
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               Text(
@@ -90,7 +124,7 @@ class CourseDetailPage extends StatelessWidget {
                     ),
               ),
               Text(
-                'You will learn vocabulary related to timely topics like remote work, artificial intelligence, online privacy, and more. In addition to discussion questions, you will practice intermediate level speaking tasks such as using data to describe trends.',
+                _courseData?.purpose ?? "",
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               const SizedBox(height: 20),
@@ -101,7 +135,7 @@ class CourseDetailPage extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               Text(
-                'Intermediate',
+                _courseData?.level ?? "",
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w500,
                     ),
@@ -114,7 +148,7 @@ class CourseDetailPage extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               Text(
-                '9 topics',
+                '${_courseData?.topics.length ?? 0} topics',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w500,
                     ),
@@ -129,7 +163,7 @@ class CourseDetailPage extends StatelessWidget {
               ListView.separated(
                 shrinkWrap: true,
                 primary: false,
-                itemCount: 10,
+                itemCount: _courseData?.topics.length ?? 0,
                 itemBuilder: (context, index) {
                   return ListTile(
                     onTap: () {
@@ -140,7 +174,7 @@ class CourseDetailPage extends StatelessWidget {
                     ),
                     tileColor: Colors.grey.shade200,
                     title: Text(
-                      '$index. The Internet',
+                      '${_courseData?.topics[index].orderCourse}. ${_courseData?.topics[index].name}',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             fontWeight: FontWeight.w500,
                           ),

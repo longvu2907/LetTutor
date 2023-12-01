@@ -54,7 +54,7 @@ class _TutorListPageState extends State<TutorListPage> {
 
   String transformBookingToString(ScheduleEvent? booking) {
     return booking != null
-        ? "${DateFormat('E, d MMM yy').format(booking.start)} ${booking.toString()}"
+        ? "${DateFormat('E, dd MMM yy').format(booking.start)} ${booking.toString()}"
         : "";
   }
 

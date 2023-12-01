@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/models/course.dart';
 
 class CourseCard extends StatelessWidget {
-  const CourseCard({super.key});
+  final CourseModel courseData;
+
+  const CourseCard({
+    super.key,
+    required this.courseData,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,37 +24,37 @@ class CourseCard extends StatelessWidget {
                   width: double.infinity,
                   height: 150,
                   child: Image.network(
-                    'https://camblycurriculumicons.s3.amazonaws.com/5e0e8b212ac750e7dc9886ac?h=d41d8cd98f00b204e9800998ecf8427e',
+                    courseData.image,
                     fit: BoxFit.cover,
                   ),
                 ),
                 ListTile(
                   title: Text(
-                    'Life in the Internet Age',
+                    courseData.name,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                   ),
                   subtitle: Text(
-                    "Let's discuss how technology is changing the way we live",
+                    courseData.description,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Colors.grey.shade600,
                         ),
                   ),
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(
-                      'Intermediate',
-                      style: TextStyle(
+                      courseData.level,
+                      style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontStyle: FontStyle.italic,
                       ),
                     ),
                     Text(
-                      '9 Lessons',
-                      style: TextStyle(
+                      '${courseData.topics.length} Lessons',
+                      style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontStyle: FontStyle.italic,
                       ),
@@ -61,7 +67,11 @@ class CourseCard extends StatelessWidget {
               children: [
                 TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, 'course-detail');
+                    Navigator.pushNamed(
+                      context,
+                      'course-detail',
+                      arguments: courseData.id,
+                    );
                   },
                   child: const Text('View'),
                 ),

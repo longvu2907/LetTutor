@@ -1,9 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/models/auth.dart';
+import 'package:lettutor/models/schedule_event.dart';
+import 'package:lettutor/services/booking.dart';
 import 'package:lettutor/widgets/history_card.dart';
 import 'package:lettutor/widgets/page_header.dart';
+import 'package:provider/provider.dart';
 
-class HistoryPage extends StatelessWidget {
+class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key});
+
+  @override
+  State<HistoryPage> createState() => _HistoryPageState();
+}
+
+class _HistoryPageState extends State<HistoryPage> {
+  List<ScheduleEvent> _bookings = [];
+
+  void getScheduleList() async {
+    var res = await getBookingsHistory(
+      accessToken: context.read<Auth>().accessToken.toString(),
+    );
+
+    setState(() {
+      _bookings = res;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    getScheduleList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +64,9 @@ class HistoryPage extends StatelessWidget {
               padding: const EdgeInsets.only(top: 10),
               primary: false,
               shrinkWrap: true,
-              itemCount: 5,
+              itemCount: _bookings.length,
               itemBuilder: (context, index) {
-                return const HistoryCard();
+                return HistoryCard(schedule: _bookings[index]);
               },
               separatorBuilder: (BuildContext context, int index) {
                 return const SizedBox(height: 20);

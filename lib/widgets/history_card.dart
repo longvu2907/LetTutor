@@ -1,8 +1,17 @@
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:lettutor/models/schedule_event.dart';
 import 'package:lettutor/widgets/rating.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class HistoryCard extends StatelessWidget {
-  const HistoryCard({super.key});
+  final ScheduleEvent schedule;
+
+  const HistoryCard({
+    super.key,
+    required this.schedule,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +28,13 @@ class HistoryCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Tue, 02 May 23',
+                DateFormat('E, dd MMM yy').format(schedule.start),
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       fontWeight: FontWeight.w500,
                     ),
               ),
               Text(
-                '5 months ago',
+                timeago.format(schedule.start),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Colors.grey.shade600,
                     ),
@@ -46,8 +55,8 @@ class HistoryCard extends StatelessWidget {
                   margin: const EdgeInsets.only(right: 15),
                   child: CircleAvatar(
                     radius: 35,
-                    backgroundImage: const NetworkImage(
-                      'https://api.app.lettutor.com/avatar/8c4e58c4-e9d1-4353-b64d-41b573c5a3e9avatar1632284832414.jpg',
+                    backgroundImage: NetworkImage(
+                      schedule.tutor?.avatar ?? "",
                     ),
                     backgroundColor: Theme.of(context).colorScheme.primary,
                   ),
@@ -57,13 +66,13 @@ class HistoryCard extends StatelessWidget {
                   spacing: 5,
                   children: [
                     Text(
-                      'Joan Gacer',
+                      schedule.tutor?.name ?? "",
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             fontWeight: FontWeight.w500,
                           ),
                     ),
                     Text(
-                      'Taiwan',
+                      '${Country.tryParse(schedule.tutor?.country ?? '')?.flagEmoji ?? ""} ${Country.tryParse(schedule.tutor?.country ?? '')?.name ?? schedule.tutor?.country}',
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                     Row(
@@ -98,7 +107,7 @@ class HistoryCard extends StatelessWidget {
           Row(
             children: [
               Text(
-                'Lesson Time: 21:00 - 21:25',
+                'Lesson Time: $schedule',
                 style: Theme.of(context).textTheme.bodyLarge,
               )
             ],
@@ -113,8 +122,8 @@ class HistoryCard extends StatelessWidget {
 
           // Schedule detail
           // Request
-          const Row(children: [
-            Text('No request for lesson'),
+          Row(children: [
+            Text(schedule.studentRequest ?? 'No request for lesson'),
           ]),
           Divider(
             color: Colors.grey.shade300,
@@ -131,30 +140,70 @@ class HistoryCard extends StatelessWidget {
           ),
 
           // Rating
-          const Row(children: [
-            Text('Rating: '),
-            Rating(rating: 5),
-          ]),
-          const SizedBox(
-            height: 5,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Edit',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: schedule.feedbacks.length,
+            itemBuilder: (context, index) {
+              return Row(
+                children: [
+                  const Text('Rating: '),
+                  const SizedBox(width: 10),
+                  Rating(rating: schedule.feedbacks[index].rating),
+                  const SizedBox(width: 25),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Edit',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                        ),
+                        Text(
+                          'Report',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                        ),
+                      ],
                     ),
-              ),
-              Text(
-                'Report',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-              ),
-            ],
+                  ),
+                ],
+              );
+            },
+            separatorBuilder: (context, index) {
+              return const SizedBox(
+                height: 5,
+              );
+            },
           ),
+          schedule.feedbacks.isEmpty
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Add',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                    ),
+                    Text(
+                      'Report',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                    ),
+                  ],
+                )
+              : Container(),
         ],
       ),
     );

@@ -1,9 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/models/auth.dart';
+import 'package:lettutor/models/schedule_event.dart';
+import 'package:lettutor/services/booking.dart';
 import 'package:lettutor/widgets/page_header.dart';
 import 'package:lettutor/widgets/schedule_card.dart';
+import 'package:provider/provider.dart';
 
-class SchedulePage extends StatelessWidget {
+class SchedulePage extends StatefulWidget {
   const SchedulePage({super.key});
+
+  @override
+  State<SchedulePage> createState() => _SchedulePageState();
+}
+
+class _SchedulePageState extends State<SchedulePage> {
+  List<ScheduleEvent> _bookings = [];
+
+  void getScheduleList() async {
+    var res = await getBookings(
+      accessToken: context.read<Auth>().accessToken.toString(),
+    );
+
+    setState(() {
+      _bookings = res;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    getScheduleList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +64,11 @@ class SchedulePage extends StatelessWidget {
               padding: const EdgeInsets.only(top: 10),
               primary: false,
               shrinkWrap: true,
-              itemCount: 5,
+              itemCount: _bookings.length,
               itemBuilder: (context, index) {
-                return const ScheduleCard();
+                return ScheduleCard(
+                  schedule: _bookings[index],
+                );
               },
               separatorBuilder: (BuildContext context, int index) {
                 return const SizedBox(height: 20);

@@ -7,8 +7,8 @@ class ReviewModel {
   final String content;
   final String name;
   final String avatar;
-  final String createdAt;
-  final String updatedAt;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
   ReviewModel({
     required this.id,
@@ -33,8 +33,8 @@ class ReviewModel {
       content: json['content'],
       name: json['firstInfo']['name'],
       avatar: json['firstInfo']['avatar'],
-      createdAt: json['createdAt'],
-      updatedAt: json['updatedAt'],
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
     );
   }
 }

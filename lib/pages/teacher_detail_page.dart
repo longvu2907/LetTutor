@@ -267,6 +267,7 @@ class _TeacherDetailPageState extends State<TeacherDetailPage> {
                   content: feedbacks[index].content,
                   rating: feedbacks[index].rating,
                   avatarUrl: feedbacks[index].avatar,
+                  date: feedbacks[index].updatedAt,
                 );
               },
               separatorBuilder: (BuildContext context, int index) {

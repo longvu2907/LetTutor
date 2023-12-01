@@ -59,7 +59,7 @@ class Button extends StatelessWidget {
         return FilledButton(
           onPressed: isLoading ? null : onPressed,
           style: ButtonStyle(
-            backgroundColor: MaterialStatePropertyAll(buttonColor),
+            // backgroundColor: MaterialStatePropertyAll(buttonColor),
             shape: MaterialStatePropertyAll(
               RoundedRectangleBorder(
                 borderRadius: rounded

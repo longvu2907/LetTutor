@@ -28,18 +28,21 @@ class CourseCard extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
-                ListTile(
-                  title: Text(
-                    courseData.name,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  subtitle: Text(
-                    courseData.description,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.grey.shade600,
-                        ),
+                SizedBox(
+                  height: 100,
+                  child: ListTile(
+                    title: Text(
+                      courseData.name,
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    subtitle: Text(
+                      courseData.description,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Colors.grey.shade600,
+                          ),
+                    ),
                   ),
                 ),
                 Row(

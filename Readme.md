@@ -8,9 +8,7 @@
 
 - Implement UI
 
-<!-- ![Alt text](assets/screenshots/Screenshot_20231104_192502.png) -->
-
-<div float="left" align="center">
+<div float="left">
   <img src="assets/screenshots/login_page.png" alt="login page" width="250"/>
   <img src="assets/screenshots/register_page.png" alt="register page" width="250"/>
   <img src="assets/screenshots/tutor_list_page.png" alt="tutor list page" width="250"/>
@@ -27,3 +25,7 @@
   <img src="assets/screenshots/lesson_detail_page.png" alt="register page" width="250"/>
   <img src="assets/screenshots/meeting_page.png" alt="meeting page" width="250"/>
 <div/>
+
+## Milestone 2:
+
+- Demo: https://drive.google.com/file/d/1p8aAGgQ9h0ET3DizHr_DjojExEViqA1O/view

@@ -110,148 +110,156 @@ class _TutorListPageState extends State<TutorListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          // Upcoming class
-          Container(
-            height: _nextBooking != null ? 225 : 150,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary,
+    return RefreshIndicator(
+      onRefresh: () {
+        updateTutorList();
+        getTotalTime();
+        getUpcomingBooking();
+
+        return Future.delayed(const Duration(seconds: 1));
+      },
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            // Upcoming class
+            Container(
+              height: _nextBooking != null ? 225 : 150,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Upcoming lesson',
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge
+                          ?.copyWith(color: Colors.white),
+                    ),
+                    const SizedBox(height: 20),
+                    _nextBooking != null
+                        ? Column(
+                            children: [
+                              Text(
+                                transformBookingToString(_nextBooking),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge
+                                    ?.copyWith(color: Colors.white),
+                              ),
+                              Text(
+                                '(starts in 00:12:14)',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge
+                                    ?.copyWith(color: Colors.yellowAccent),
+                              ),
+                              ElevatedButton(
+                                child: const Text('Enter lesson room'),
+                                onPressed: () {},
+                              ),
+                              const SizedBox(height: 10),
+                            ],
+                          )
+                        : Container(),
+                    Text(
+                      'Total lesson time is ${transformMinutesToString(_totalTime)}',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyLarge
+                          ?.copyWith(color: Colors.white),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            child: Center(
+
+            Padding(
+              padding: const EdgeInsets.all(10),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Upcoming lesson',
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge
-                        ?.copyWith(color: Colors.white),
+                  const PageHeader(
+                    title: 'Find a Tutor',
+                    subtitle:
+                        'Find the right tutor for you\nYou can search for tutors by subject, level, or teacher',
                   ),
                   const SizedBox(height: 20),
-                  _nextBooking != null
-                      ? Column(
-                          children: [
-                            Text(
-                              transformBookingToString(_nextBooking),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge
-                                  ?.copyWith(color: Colors.white),
-                            ),
-                            Text(
-                              '(starts in 00:12:14)',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge
-                                  ?.copyWith(color: Colors.yellowAccent),
-                            ),
-                            Button(
-                              text: 'Enter lesson room',
-                              onPressed: () {},
-                              color: ButtonColor.white,
-                            ),
-                            const SizedBox(height: 10),
-                          ],
-                        )
-                      : Container(),
-                  Text(
-                    'Total lesson time is ${transformMinutesToString(_totalTime)}',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge
-                        ?.copyWith(color: Colors.white),
+
+                  // Search bar
+                  TextInput(
+                    name: "name",
+                    labelText: "Search",
+                    onChange: _searchByName,
                   ),
+                  const SizedBox(height: 20),
+                  DropdownButton<String>(
+                    value: _nationality,
+                    elevation: 16,
+                    hint: const Text("Nationality"),
+                    onChanged: _searchByNationality,
+                    isExpanded: true,
+                    items: [
+                      "All",
+                      "Foreign Tutor",
+                      "Vietnamese Tutor",
+                      "Native English Tutor"
+                    ].map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(height: 20),
+                  Wrap(
+                    spacing: 7,
+                    runSpacing: 7,
+                    children: _specialties
+                        .map((e) => GestureDetector(
+                              onTap: () {
+                                _searchBySpecialties(e);
+                              },
+                              child: Tag(
+                                text: e,
+                                selected: _selectedSpecialty == e,
+                              ),
+                            ))
+                        .toList(),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Teacher list
+                  Text(
+                    'Recommended Tutors',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 10),
+                  _isLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : ListView.separated(
+                          primary: false,
+                          shrinkWrap: true,
+                          itemBuilder: ((context, index) {
+                            return TeacherCard(userData: _tutors[index]);
+                          }),
+                          separatorBuilder: ((context, index) {
+                            return const SizedBox(height: 20);
+                          }),
+                          itemCount: _tutors.length,
+                        ),
+
+                  // Footer
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
-          ),
-
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const PageHeader(
-                  title: 'Find a Tutor',
-                  subtitle:
-                      'Find the right tutor for you\nYou can search for tutors by subject, level, or teacher',
-                ),
-                const SizedBox(height: 20),
-
-                // Search bar
-                TextInput(
-                  name: "name",
-                  labelText: "Search",
-                  onChange: _searchByName,
-                ),
-                const SizedBox(height: 20),
-                DropdownButton<String>(
-                  value: _nationality,
-                  elevation: 16,
-                  hint: const Text("Nationality"),
-                  onChanged: _searchByNationality,
-                  isExpanded: true,
-                  items: [
-                    "All",
-                    "Foreign Tutor",
-                    "Vietnamese Tutor",
-                    "Native English Tutor"
-                  ].map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
-                const SizedBox(height: 20),
-                Wrap(
-                  spacing: 7,
-                  runSpacing: 7,
-                  children: _specialties
-                      .map((e) => GestureDetector(
-                            onTap: () {
-                              _searchBySpecialties(e);
-                            },
-                            child: Tag(
-                              text: e,
-                              selected: _selectedSpecialty == e,
-                            ),
-                          ))
-                      .toList(),
-                ),
-                const SizedBox(height: 20),
-
-                // Teacher list
-                Text(
-                  'Recommended Tutors',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: 10),
-                _isLoading
-                    ? const Center(child: CircularProgressIndicator())
-                    : ListView.separated(
-                        primary: false,
-                        shrinkWrap: true,
-                        itemBuilder: ((context, index) {
-                          return TeacherCard(userData: _tutors[index]);
-                        }),
-                        separatorBuilder: ((context, index) {
-                          return const SizedBox(height: 20);
-                        }),
-                        itemCount: _tutors.length,
-                      ),
-
-                // Footer
-                const SizedBox(height: 20),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -34,23 +34,25 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(
                 width: 10,
               ),
-              Wrap(
-                direction: Axis.vertical,
-                children: [
-                  Text(
-                    userData?.name ?? '',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          height: 1.4,
-                        ),
-                  ),
-                  Text(
-                    userData?.email ?? '',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          height: 1.4,
-                        ),
-                  ),
-                  Text(userData?.id ?? '')
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      userData?.name ?? '',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            height: 1.4,
+                          ),
+                    ),
+                    Text(
+                      userData?.email ?? '',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            height: 1.4,
+                          ),
+                    ),
+                    Text(userData?.id ?? '')
+                  ],
+                ),
               )
             ],
           ),
@@ -134,7 +136,7 @@ class _ProfilePageState extends State<ProfilePage> {
               }
             },
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           Button(
             text: 'Setting',
             isFullWidth: true,

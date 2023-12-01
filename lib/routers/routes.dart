@@ -8,6 +8,7 @@ import 'package:lettutor/pages/home_page.dart';
 import 'package:lettutor/pages/lesson_detail_page.dart';
 import 'package:lettutor/pages/meeting_page.dart';
 import 'package:lettutor/pages/schedule_page.dart';
+import 'package:lettutor/pages/setting_page.dart';
 import 'package:lettutor/pages/tutor_list_page.dart';
 
 Map<String, WidgetBuilder> routes = {
@@ -21,4 +22,5 @@ Map<String, WidgetBuilder> routes = {
   'lesson-detail': (context) => const LessonDetailPage(),
   'meeting': (context) => const MeetingPage(),
   'tutor-list': (context) => const TutorListPage(),
+  'setting': (context) => const SettingPage(),
 };

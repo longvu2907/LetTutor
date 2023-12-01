@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/pages/discover_page.dart';
 import 'package:lettutor/pages/history_page.dart';
+import 'package:lettutor/pages/profile_page.dart';
 import 'package:lettutor/pages/schedule_page.dart';
 import 'package:lettutor/pages/tutor_list_page.dart';
 import 'package:lettutor/widgets/custom_app_bar.dart';
@@ -45,6 +46,10 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.history),
             label: 'History',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
         ],
       ),
       body: IndexedStack(
@@ -54,6 +59,7 @@ class _HomePageState extends State<HomePage> {
           DiscoverPage(),
           SchedulePage(),
           HistoryPage(),
+          ProfilePage(),
         ],
       ),
     );

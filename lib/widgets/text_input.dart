@@ -8,6 +8,8 @@ class TextInput extends StatefulWidget {
   final double? width;
   final bool isPasswordField;
   final void Function(String?)? onChange;
+  final String? initialValue;
+  final bool disabled;
 
   const TextInput({
     super.key,
@@ -17,6 +19,8 @@ class TextInput extends StatefulWidget {
     this.validator,
     this.width,
     this.isPasswordField = false,
+    this.initialValue,
+    this.disabled = false,
   });
 
   @override
@@ -42,6 +46,8 @@ class _TextInputState extends State<TextInput> {
         textInputAction: TextInputAction.next,
         validator: widget.validator,
         obscureText: !_passwordVisible,
+        initialValue: widget.initialValue ?? '',
+        enabled: !widget.disabled,
         decoration: InputDecoration(
           suffixIcon: widget.isPasswordField
               ? IconButton(

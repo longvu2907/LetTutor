@@ -9,10 +9,8 @@ class Auth extends ChangeNotifier {
   Auth({this.user, this.accessToken, this.refreshToken});
 
   factory Auth.fromJson(Map<String, dynamic> json) {
-    print(User.fromJson(json['user']));
-
     return Auth(
-      user: null,
+      user: json['user'] != null ? User.fromJson(json['user']) : null,
       accessToken: json['tokens']['access']['token'],
       refreshToken: json['tokens']['refresh']['token'],
     );

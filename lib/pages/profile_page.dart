@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:lettutor/models/auth.dart';
 import 'package:lettutor/models/user.dart';
 import 'package:lettutor/widgets/button.dart';
@@ -17,6 +18,8 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final _formKey = GlobalKey<FormBuilderState>();
 
+  ImagePicker picker = ImagePicker();
+
   @override
   Widget build(BuildContext context) {
     User? userData = context.watch<Auth>().user;
@@ -27,9 +30,12 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           Row(
             children: [
-              CircleAvatar(
-                radius: 50,
-                backgroundImage: NetworkImage(userData?.avatar ?? ''),
+              GestureDetector(
+                onTap: () => picker.pickImage(source: ImageSource.gallery),
+                child: CircleAvatar(
+                  radius: 50,
+                  backgroundImage: NetworkImage(userData?.avatar ?? ''),
+                ),
               ),
               const SizedBox(
                 width: 10,

@@ -7,7 +7,6 @@ import 'package:lettutor/models/schedule_event.dart';
 import 'package:lettutor/models/user.dart';
 import 'package:lettutor/services/booking.dart';
 import 'package:lettutor/services/tutor.dart';
-import 'package:lettutor/widgets/button.dart';
 import 'package:lettutor/widgets/page_header.dart';
 import 'package:lettutor/widgets/tag.dart';
 import 'package:lettutor/widgets/teacher_card.dart';
@@ -241,17 +240,23 @@ class _TutorListPageState extends State<TutorListPage> {
                   const SizedBox(height: 10),
                   _isLoading
                       ? const Center(child: CircularProgressIndicator())
-                      : ListView.separated(
-                          primary: false,
-                          shrinkWrap: true,
-                          itemBuilder: ((context, index) {
-                            return TeacherCard(userData: _tutors[index]);
-                          }),
-                          separatorBuilder: ((context, index) {
-                            return const SizedBox(height: 20);
-                          }),
-                          itemCount: _tutors.length,
-                        ),
+                      : _tutors.isNotEmpty
+                          ? ListView.separated(
+                              primary: false,
+                              shrinkWrap: true,
+                              itemBuilder: ((context, index) {
+                                return TeacherCard(userData: _tutors[index]);
+                              }),
+                              separatorBuilder: ((context, index) {
+                                return const SizedBox(height: 20);
+                              }),
+                              itemCount: _tutors.length,
+                            )
+                          : const Center(
+                              child: Text(
+                                "Sorry we can't find any tutor with this keywords",
+                              ),
+                            ),
 
                   // Footer
                   const SizedBox(height: 20),

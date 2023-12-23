@@ -28,6 +28,7 @@ class _ProfilePageState extends State<ProfilePage> {
       padding: const EdgeInsets.all(10),
       child: Column(
         children: [
+          // Avatar
           Row(
             children: [
               GestureDetector(
@@ -62,6 +63,8 @@ class _ProfilePageState extends State<ProfilePage> {
               )
             ],
           ),
+
+          // Form
           const SizedBox(height: 50),
           FormBuilder(
             key: _formKey,
@@ -128,6 +131,8 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             ),
           ),
+
+          // Save button
           const SizedBox(height: 20),
           Button(
             text: 'Save',
@@ -142,6 +147,18 @@ class _ProfilePageState extends State<ProfilePage> {
               }
             },
           ),
+
+          // Become tutor button
+          const SizedBox(height: 10),
+          Button(
+            text: 'Become Tutor',
+            isFullWidth: true,
+            onPressed: () {
+              Navigator.pushNamed(context, 'become-tutor');
+            },
+          ),
+
+          // Setting button
           const SizedBox(height: 10),
           Button(
             text: 'Setting',

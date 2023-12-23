@@ -59,6 +59,7 @@ class _DiscoverPageState extends State<DiscoverPage>
             TabBar(
               isScrollable: true,
               controller: _tabController,
+              tabAlignment: TabAlignment.start,
               onTap: (index) => setState(() {}),
               tabs: const [
                 Tab(

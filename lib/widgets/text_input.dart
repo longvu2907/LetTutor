@@ -10,6 +10,7 @@ class TextInput extends StatefulWidget {
   final void Function(String?)? onChange;
   final String? initialValue;
   final bool disabled;
+  final int? maxLines;
 
   const TextInput({
     super.key,
@@ -21,6 +22,7 @@ class TextInput extends StatefulWidget {
     this.isPasswordField = false,
     this.initialValue,
     this.disabled = false,
+    this.maxLines,
   });
 
   @override
@@ -43,11 +45,13 @@ class _TextInputState extends State<TextInput> {
       child: FormBuilderTextField(
         onChanged: widget.onChange,
         name: widget.name,
-        textInputAction: TextInputAction.next,
+        textInputAction: widget.maxLines == null ? TextInputAction.next : null,
         validator: widget.validator,
         obscureText: !_passwordVisible,
         initialValue: widget.initialValue ?? '',
         enabled: !widget.disabled,
+        maxLines: widget.maxLines ?? 1,
+        minLines: 1,
         decoration: InputDecoration(
           suffixIcon: widget.isPasswordField
               ? IconButton(

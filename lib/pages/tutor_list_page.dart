@@ -8,6 +8,7 @@ import 'package:lettutor/models/user.dart';
 import 'package:lettutor/services/booking.dart';
 import 'package:lettutor/services/tutor.dart';
 import 'package:lettutor/widgets/page_header.dart';
+import 'package:lettutor/widgets/snackbar_notify.dart';
 import 'package:lettutor/widgets/tag.dart';
 import 'package:lettutor/widgets/teacher_card.dart';
 import 'package:lettutor/widgets/text_input.dart';
@@ -99,28 +100,40 @@ class _TutorListPageState extends State<TutorListPage> {
     });
   }
 
+  void fetchData({bool isRefresh = false}) {
+    try {
+      updateTutorList();
+      getTotalTime();
+      getUpcomingBooking();
+
+      if (isRefresh) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          successMessage('Refresh data success'),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(errorMessage(e.toString()));
+    }
+  }
+
   @override
   void initState() {
-    super.initState();
-
     Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         _startIn = _nextBooking?.start.difference(DateTime.now());
       });
     });
 
-    updateTutorList();
-    getTotalTime();
-    getUpcomingBooking();
+    fetchData();
+
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () {
-        updateTutorList();
-        getTotalTime();
-        getUpcomingBooking();
+        fetchData(isRefresh: true);
 
         return Future.delayed(const Duration(seconds: 1));
       },

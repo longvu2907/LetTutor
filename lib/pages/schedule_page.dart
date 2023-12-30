@@ -4,6 +4,7 @@ import 'package:lettutor/models/schedule_event.dart';
 import 'package:lettutor/services/booking.dart';
 import 'package:lettutor/widgets/page_header.dart';
 import 'package:lettutor/widgets/schedule_card.dart';
+import 'package:lettutor/widgets/snackbar_notify.dart';
 import 'package:provider/provider.dart';
 
 class SchedulePage extends StatefulWidget {
@@ -26,18 +27,34 @@ class _SchedulePageState extends State<SchedulePage> {
     });
   }
 
+  void fetchData({bool isRefresh = false}) {
+    try {
+      getScheduleList();
+
+      if (isRefresh) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          successMessage('Refresh data success'),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        errorMessage(e.toString()),
+      );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
 
-    getScheduleList();
+    fetchData();
   }
 
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () {
-        getScheduleList();
+        fetchData(isRefresh: true);
 
         return Future.delayed(const Duration(seconds: 1));
       },

@@ -6,6 +6,7 @@ import 'package:lettutor/services/tutor.dart';
 import 'package:lettutor/widgets/custom_app_bar.dart';
 import 'package:lettutor/widgets/rating.dart';
 import 'package:lettutor/widgets/review.dart';
+import 'package:lettutor/widgets/snackbar_notify.dart';
 import 'package:lettutor/widgets/table_event.dart';
 import 'package:lettutor/widgets/tag.dart';
 import 'package:lettutor/widgets/video.dart';
@@ -39,7 +40,9 @@ class _TeacherDetailPageState extends State<TeacherDetailPage> {
         });
       },
     ).catchError((error) {
-      print(error);
+      ScaffoldMessenger.of(context).showSnackBar(
+        errorMessage(error.toString()),
+      );
     });
   }
 
@@ -54,7 +57,9 @@ class _TeacherDetailPageState extends State<TeacherDetailPage> {
         });
       },
     ).catchError((error) {
-      print(error);
+      ScaffoldMessenger.of(context).showSnackBar(
+        errorMessage(error.toString()),
+      );
     });
   }
 
@@ -66,12 +71,28 @@ class _TeacherDetailPageState extends State<TeacherDetailPage> {
     updateTutor();
   }
 
+  void fetchData({bool isRefresh = false}) {
+    try {
+      updateTutor();
+      updateReview();
+
+      if (isRefresh) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          successMessage('Refresh data success'),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        errorMessage(e.toString()),
+      );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
 
-    updateTutor();
-    updateReview();
+    fetchData();
   }
 
   @override
@@ -80,205 +101,215 @@ class _TeacherDetailPageState extends State<TeacherDetailPage> {
       appBar: const CustomAppBar(
         showBackButton: true,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Teacher info
-            Wrap(
-              spacing: 15,
-              children: [
-                CircleAvatar(
-                  radius: 30,
-                  backgroundImage: NetworkImage(tutorData?.user?.avatar ?? ''),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      tutorData?.user?.name ?? '',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            height: 1.4,
-                          ),
-                    ),
-                    Text(
-                      tutorData?.user?.country ?? '',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.grey.shade600,
-                          ),
-                    ),
-                    Rating(
-                      rating: tutorData?.rating ?? 0,
-                      size: 18,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 15),
-            Text(
-              tutorData?.bio ?? '',
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-            const SizedBox(height: 10),
+      body: RefreshIndicator(
+        onRefresh: () {
+          fetchData();
 
-            // Favorite and report button
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Column(
-                  children: [
-                    IconButton(
-                      onPressed: toggleFavorite,
-                      icon: Icon(
-                        tutorData?.isFavorite == true
-                            ? MdiIcons.heart
-                            : MdiIcons.heartOutline,
-                        size: 28,
-                        color: Colors.red.shade300,
+          return Future.delayed(const Duration(seconds: 1));
+        },
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Teacher info
+              Wrap(
+                spacing: 15,
+                children: [
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundImage:
+                        NetworkImage(tutorData?.user?.avatar ?? ''),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        tutorData?.user?.name ?? '',
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  height: 1.4,
+                                ),
                       ),
-                    ),
-                    Text(
-                      'Favorite',
-                      style: TextStyle(
-                        fontSize: 12,
-                        height: 0.4,
-                        color: Colors.red.shade300,
+                      Text(
+                        tutorData?.user?.country ?? '',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: Colors.grey.shade600,
+                            ),
                       ),
-                    )
-                  ],
-                ),
-                Column(
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.report_problem_outlined,
-                        size: 28,
-                        color: Theme.of(context).primaryColor,
+                      Rating(
+                        rating: tutorData?.rating ?? 0,
+                        size: 18,
                       ),
-                    ),
-                    Text('Report',
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 15),
+              Text(
+                tutorData?.bio ?? '',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              const SizedBox(height: 10),
+
+              // Favorite and report button
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Column(
+                    children: [
+                      IconButton(
+                        onPressed: toggleFavorite,
+                        icon: Icon(
+                          tutorData?.isFavorite == true
+                              ? MdiIcons.heart
+                              : MdiIcons.heartOutline,
+                          size: 28,
+                          color: Colors.red.shade300,
+                        ),
+                      ),
+                      Text(
+                        'Favorite',
                         style: TextStyle(
                           fontSize: 12,
                           height: 0.4,
+                          color: Colors.red.shade300,
+                        ),
+                      )
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.report_problem_outlined,
+                          size: 28,
                           color: Theme.of(context).primaryColor,
-                        ))
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 25),
+                        ),
+                      ),
+                      Text('Report',
+                          style: TextStyle(
+                            fontSize: 12,
+                            height: 0.4,
+                            color: Theme.of(context).primaryColor,
+                          ))
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 25),
 
-            // Video
-            Video(
-              url: tutorData?.video ?? '',
-              height: 200,
-            ),
-            const SizedBox(height: 25),
+              // Video
+              Video(
+                url: tutorData?.video ?? '',
+                height: 200,
+              ),
+              const SizedBox(height: 25),
 
-            // Education
-            Text(
-              'Education',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            Text(
-              tutorData?.education ?? '',
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-            const SizedBox(height: 10),
+              // Education
+              Text(
+                'Education',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              Text(
+                tutorData?.education ?? '',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              const SizedBox(height: 10),
 
-            // Languages
-            Text(
-              'Languages',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            Wrap(
-              spacing: 7,
-              runSpacing: 7,
-              children: tutorData?.languages
-                      ?.map((e) => Tag(text: e.toUpperCase()))
-                      .toList() ??
-                  const [],
-            ),
-            const SizedBox(height: 10),
+              // Languages
+              Text(
+                'Languages',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              Wrap(
+                spacing: 7,
+                runSpacing: 7,
+                children: tutorData?.languages
+                        ?.map((e) => Tag(text: e.toUpperCase()))
+                        .toList() ??
+                    const [],
+              ),
+              const SizedBox(height: 10),
 
-            // Specialties
-            Text(
-              'Specialties',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            Wrap(
-              spacing: 7,
-              runSpacing: 7,
-              children: tutorData?.specialties
-                      ?.map((e) => Tag(text: e.toUpperCase()))
-                      .toList() ??
-                  const [],
-            ),
-            const SizedBox(height: 10),
+              // Specialties
+              Text(
+                'Specialties',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              Wrap(
+                spacing: 7,
+                runSpacing: 7,
+                children: tutorData?.specialties
+                        ?.map((e) => Tag(text: e.toUpperCase()))
+                        .toList() ??
+                    const [],
+              ),
+              const SizedBox(height: 10),
 
-            // Interests
-            Text(
-              'Interests',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            Text(
-              tutorData?.interests ?? '',
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-            const SizedBox(height: 10),
+              // Interests
+              Text(
+                'Interests',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              Text(
+                tutorData?.interests ?? '',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              const SizedBox(height: 10),
 
-            // Experience
-            Text(
-              'Teaching experience',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            Text(
-              tutorData?.experience ?? '',
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-            const SizedBox(height: 20),
+              // Experience
+              Text(
+                'Teaching experience',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              Text(
+                tutorData?.experience ?? '',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              const SizedBox(height: 20),
 
-            // Schedule
-            Text(
-              'Schedule',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            ScheduleTable(
-              tutorId: widget.tutorId,
-            ),
-            const SizedBox(height: 20),
+              // Schedule
+              Text(
+                'Schedule',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              ScheduleTable(
+                tutorId: widget.tutorId,
+              ),
+              const SizedBox(height: 20),
 
-            // Others review
-            Text(
-              'Others review',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const SizedBox(height: 10),
-            ListView.separated(
-              primary: false,
-              shrinkWrap: true,
-              itemCount: feedbacks.length,
-              itemBuilder: (context, index) {
-                return Review(
-                  name: feedbacks[index].name,
-                  content: feedbacks[index].content,
-                  rating: feedbacks[index].rating,
-                  avatarUrl: feedbacks[index].avatar,
-                  date: feedbacks[index].updatedAt,
-                );
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return Divider(
-                  color: Colors.grey.shade300,
-                  thickness: 1,
-                );
-              },
-            ),
-            const SizedBox(height: 10),
-          ],
+              // Others review
+              Text(
+                'Others review',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: 10),
+              ListView.separated(
+                primary: false,
+                shrinkWrap: true,
+                itemCount: feedbacks.length,
+                itemBuilder: (context, index) {
+                  return Review(
+                    name: feedbacks[index].name,
+                    content: feedbacks[index].content,
+                    rating: feedbacks[index].rating,
+                    avatarUrl: feedbacks[index].avatar,
+                    date: feedbacks[index].updatedAt,
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return Divider(
+                    color: Colors.grey.shade300,
+                    thickness: 1,
+                  );
+                },
+              ),
+              const SizedBox(height: 10),
+            ],
+          ),
         ),
       ),
     );

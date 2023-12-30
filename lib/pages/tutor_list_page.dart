@@ -7,8 +7,8 @@ import 'package:lettutor/models/schedule_event.dart';
 import 'package:lettutor/models/user.dart';
 import 'package:lettutor/services/booking.dart';
 import 'package:lettutor/services/tutor.dart';
-import 'package:lettutor/widgets/button.dart';
 import 'package:lettutor/widgets/page_header.dart';
+import 'package:lettutor/widgets/snackbar_notify.dart';
 import 'package:lettutor/widgets/tag.dart';
 import 'package:lettutor/widgets/teacher_card.dart';
 import 'package:lettutor/widgets/text_input.dart';
@@ -44,6 +44,7 @@ class _TutorListPageState extends State<TutorListPage> {
   bool _isLoading = false;
   int _totalTime = 0;
   ScheduleEvent? _nextBooking;
+  Duration? _startIn;
 
   String transformMinutesToString(int minutes) {
     int hours = minutes ~/ 60;
@@ -99,22 +100,40 @@ class _TutorListPageState extends State<TutorListPage> {
     });
   }
 
+  void fetchData({bool isRefresh = false}) {
+    try {
+      updateTutorList();
+      getTotalTime();
+      getUpcomingBooking();
+
+      if (isRefresh) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          successMessage('Refresh data success'),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(errorMessage(e.toString()));
+    }
+  }
+
   @override
   void initState() {
-    super.initState();
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        _startIn = _nextBooking?.start.difference(DateTime.now());
+      });
+    });
 
-    updateTutorList();
-    getTotalTime();
-    getUpcomingBooking();
+    fetchData();
+
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () {
-        updateTutorList();
-        getTotalTime();
-        getUpcomingBooking();
+        fetchData(isRefresh: true);
 
         return Future.delayed(const Duration(seconds: 1));
       },
@@ -140,7 +159,7 @@ class _TutorListPageState extends State<TutorListPage> {
                           .titleLarge
                           ?.copyWith(color: Colors.white),
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     _nextBooking != null
                         ? Column(
                             children: [
@@ -152,7 +171,7 @@ class _TutorListPageState extends State<TutorListPage> {
                                     ?.copyWith(color: Colors.white),
                               ),
                               Text(
-                                '(starts in 00:12:14)',
+                                '(Starts in ${_startIn.toString().split('.').first.padLeft(8, "0")})',
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyLarge
@@ -241,17 +260,23 @@ class _TutorListPageState extends State<TutorListPage> {
                   const SizedBox(height: 10),
                   _isLoading
                       ? const Center(child: CircularProgressIndicator())
-                      : ListView.separated(
-                          primary: false,
-                          shrinkWrap: true,
-                          itemBuilder: ((context, index) {
-                            return TeacherCard(userData: _tutors[index]);
-                          }),
-                          separatorBuilder: ((context, index) {
-                            return const SizedBox(height: 20);
-                          }),
-                          itemCount: _tutors.length,
-                        ),
+                      : _tutors.isNotEmpty
+                          ? ListView.separated(
+                              primary: false,
+                              shrinkWrap: true,
+                              itemBuilder: ((context, index) {
+                                return TeacherCard(userData: _tutors[index]);
+                              }),
+                              separatorBuilder: ((context, index) {
+                                return const SizedBox(height: 20);
+                              }),
+                              itemCount: _tutors.length,
+                            )
+                          : const Center(
+                              child: Text(
+                                "Sorry we can't find any tutor with this keywords",
+                              ),
+                            ),
 
                   // Footer
                   const SizedBox(height: 20),

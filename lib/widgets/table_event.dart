@@ -5,6 +5,7 @@ import 'package:lettutor/models/auth.dart';
 import 'package:lettutor/models/schedule_event.dart';
 import 'package:lettutor/services/tutor.dart';
 import 'package:lettutor/widgets/button.dart';
+import 'package:lettutor/widgets/snackbar_notify.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -38,11 +39,18 @@ class ScheduleTableState extends State<ScheduleTable> {
   );
 
   void _bookSchedule(ScheduleEvent value) async {
-    await bookSchedule(
-      tutorId: widget.tutorId,
-      accessToken: context.read<Auth>().accessToken.toString(),
-      scheduleId: value.id,
-    );
+    try {
+      await bookSchedule(
+        tutorId: widget.tutorId,
+        accessToken: context.read<Auth>().accessToken.toString(),
+        scheduleId: value.id,
+      );
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(successMessage("Book success"));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(errorMessage(e.toString()));
+    }
     getEvents();
   }
 
@@ -77,7 +85,7 @@ class ScheduleTableState extends State<ScheduleTable> {
         _selectedEvents.value = _getEventsForDay(_selectedDay!);
       });
     } catch (e) {
-      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(errorMessage(e.toString()));
     }
   }
 

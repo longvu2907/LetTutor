@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lettutor/pages/auth/forgot_password_page.dart';
 import 'package:lettutor/pages/auth/login_page.dart';
 import 'package:lettutor/pages/auth/register_page.dart';
+import 'package:lettutor/pages/become_tutor/become_tutor_page.dart';
 import 'package:lettutor/pages/discover_page.dart';
 import 'package:lettutor/pages/history_page.dart';
 import 'package:lettutor/pages/home_page.dart';
@@ -23,4 +24,5 @@ Map<String, WidgetBuilder> routes = {
   'meeting': (context) => const MeetingPage(),
   'tutor-list': (context) => const TutorListPage(),
   'setting': (context) => const SettingPage(),
+  'become-tutor': (context) => const BecomeTutorPage(),
 };

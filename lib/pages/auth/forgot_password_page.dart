@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:lettutor/pages/auth/widgets/auth_layout.dart';
+import 'package:lettutor/services/auth.dart';
 import 'package:lettutor/widgets/button.dart';
+import 'package:lettutor/widgets/snackbar_notify.dart';
 import 'package:lettutor/widgets/text_input.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
@@ -14,7 +16,6 @@ class ForgotPasswordPage extends StatefulWidget {
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final _formKey = GlobalKey<FormBuilderState>();
-  String _errorMessage = '';
   bool _isLoading = false;
 
   @override
@@ -56,12 +57,25 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     );
   }
 
-  void _resetPassword() {
+  void _resetPassword() async {
     _formKey.currentState?.save();
     if (_formKey.currentState!.validate()) {
       final formData = _formKey.currentState?.value;
 
-      print(formData);
+      try {
+        setState(() {
+          _isLoading = true;
+        });
+        var message = await forgotPassword(formData!['email']);
+        ScaffoldMessenger.of(context).showSnackBar(successMessage(message));
+        Navigator.pushNamed(context, 'login');
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(errorMessage(e.toString()));
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 }

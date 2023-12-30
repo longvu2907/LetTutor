@@ -38,11 +38,18 @@ class ScheduleTableState extends State<ScheduleTable> {
   );
 
   void _bookSchedule(ScheduleEvent value) async {
-    await bookSchedule(
-      tutorId: widget.tutorId,
-      accessToken: context.read<Auth>().accessToken.toString(),
-      scheduleId: value.id,
-    );
+    try {
+      await bookSchedule(
+        tutorId: widget.tutorId,
+        accessToken: context.read<Auth>().accessToken.toString(),
+        scheduleId: value.id,
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        duration: const Duration(seconds: 5),
+        content: Text(e.toString()),
+      ));
+    }
     getEvents();
   }
 

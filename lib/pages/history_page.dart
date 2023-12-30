@@ -35,44 +35,52 @@ class _HistoryPageState extends State<HistoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Schedule header
-            const PageHeader(
-              title: 'History',
-              subtitle:
-                  'The following is a list of lessons you have attended\nYou can review the details of the lessons you have attended',
-            ),
+    return RefreshIndicator(
+      onRefresh: () {
+        getScheduleList();
 
-            // Schedule list
-            const SizedBox(
-              height: 25,
-            ),
-            Text(
-              'Latest Book',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
+        return Future.delayed(const Duration(seconds: 1));
+      },
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Schedule header
+              const PageHeader(
+                title: 'History',
+                subtitle:
+                    'The following is a list of lessons you have attended\nYou can review the details of the lessons you have attended',
+              ),
 
-            // Booking card list
-            ListView.separated(
-              padding: const EdgeInsets.only(top: 10),
-              primary: false,
-              shrinkWrap: true,
-              itemCount: _bookings.length,
-              itemBuilder: (context, index) {
-                return HistoryCard(schedule: _bookings[index]);
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return const SizedBox(height: 20);
-              },
-            ),
-          ],
+              // Schedule list
+              const SizedBox(
+                height: 25,
+              ),
+              Text(
+                'Latest Book',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+
+              // Booking card list
+              ListView.separated(
+                padding: const EdgeInsets.only(top: 10),
+                primary: false,
+                shrinkWrap: true,
+                itemCount: _bookings.length,
+                itemBuilder: (context, index) {
+                  return HistoryCard(schedule: _bookings[index]);
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return const SizedBox(height: 20);
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

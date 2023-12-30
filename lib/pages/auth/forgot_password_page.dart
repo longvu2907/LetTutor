@@ -16,7 +16,6 @@ class ForgotPasswordPage extends StatefulWidget {
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final _formKey = GlobalKey<FormBuilderState>();
-  String _errorMessage = '';
   bool _isLoading = false;
 
   @override
@@ -64,11 +63,18 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       final formData = _formKey.currentState?.value;
 
       try {
+        setState(() {
+          _isLoading = true;
+        });
         var message = await forgotPassword(formData!['email']);
         ScaffoldMessenger.of(context).showSnackBar(successMessage(message));
         Navigator.pushNamed(context, 'login');
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(errorMessage(e.toString()));
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
       }
     }
   }

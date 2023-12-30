@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -52,6 +51,7 @@ class _BecomeTutorPageState extends State<BecomeTutorPage> {
   String? _targetStudent;
   XFile? avatar;
   final List<bool> _specialties = List.filled(specialties.length, false);
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -273,6 +273,7 @@ class _BecomeTutorPageState extends State<BecomeTutorPage> {
                 const SizedBox(height: 10),
                 Button(
                     text: "Register",
+                    isLoading: _isLoading,
                     onPressed: () async {
                       if (_formKey.currentState!.saveAndValidate()) {
                         var formValue = _formKey.currentState!.value;
@@ -284,6 +285,9 @@ class _BecomeTutorPageState extends State<BecomeTutorPage> {
                         }
 
                         try {
+                          setState(() {
+                            _isLoading = true;
+                          });
                           await becomeTutor(
                             accessToken:
                                 context.read<Auth>().accessToken.toString(),
@@ -309,6 +313,10 @@ class _BecomeTutorPageState extends State<BecomeTutorPage> {
                         } catch (e) {
                           ScaffoldMessenger.of(context)
                               .showSnackBar(errorMessage(e.toString()));
+                        } finally {
+                          setState(() {
+                            _isLoading = false;
+                          });
                         }
                       }
                     },

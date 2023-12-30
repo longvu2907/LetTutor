@@ -5,6 +5,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:lettutor/constants/country.dart';
 import 'package:lettutor/models/auth.dart';
 import 'package:lettutor/models/user.dart';
 import 'package:lettutor/services/user.dart';
@@ -22,7 +23,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final _formKey = GlobalKey<FormBuilderState>();
-
+  String? _countryCode;
   DateTime? _selectedDate;
   ImagePicker picker = ImagePicker();
   XFile? avatar;
@@ -31,6 +32,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     _selectedDate = context.read<Auth>().user?.birthday;
+    _countryCode = context.read<Auth>().user?.country;
 
     super.initState();
   }
@@ -102,13 +104,22 @@ class _ProfilePageState extends State<ProfilePage> {
                   ]),
                 ),
                 const SizedBox(height: 20),
-                TextInput(
-                  name: 'country',
-                  labelText: "Country",
-                  initialValue: userData?.country ?? '',
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(),
-                  ]),
+                DropdownButton<String>(
+                  value: _countryCode,
+                  elevation: 16,
+                  hint: const Text("Country"),
+                  onChanged: (v) {
+                    setState(() {
+                      _countryCode = v;
+                    });
+                  },
+                  isExpanded: true,
+                  items: countryList.map<DropdownMenuItem<String>>((value) {
+                    return DropdownMenuItem<String>(
+                      value: value["code"],
+                      child: Text(value["name"]!),
+                    );
+                  }).toList(),
                 ),
                 const SizedBox(height: 20),
                 TextInput(
@@ -156,7 +167,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       accessToken: context.read<Auth>().accessToken.toString(),
                       data: UpdateProfileRequest(
                         name: data?['name'],
-                        country: data?['country'],
+                        country: _countryCode ?? '',
                         phone: data?['phone'],
                         birthDate: _selectedDate!,
                       ));

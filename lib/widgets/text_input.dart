@@ -11,6 +11,7 @@ class TextInput extends StatefulWidget {
   final String? initialValue;
   final bool disabled;
   final int? maxLines;
+  final bool isNumberField;
 
   const TextInput({
     super.key,
@@ -23,6 +24,7 @@ class TextInput extends StatefulWidget {
     this.initialValue,
     this.disabled = false,
     this.maxLines,
+    this.isNumberField = false,
   });
 
   @override
@@ -52,6 +54,8 @@ class _TextInputState extends State<TextInput> {
         enabled: !widget.disabled,
         maxLines: widget.maxLines ?? 1,
         minLines: 1,
+        keyboardType:
+            widget.isNumberField ? TextInputType.number : TextInputType.text,
         decoration: InputDecoration(
           suffixIcon: widget.isPasswordField
               ? IconButton(

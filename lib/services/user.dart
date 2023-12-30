@@ -73,3 +73,87 @@ Future<User> updateAvatar({
     throw (json.decode(response.body)['message']);
   }
 }
+
+class BecomeTutorRequest {
+  final String name;
+  final String country;
+  late String birthday;
+  final String interests;
+  final String education;
+  final String experience;
+  final String profession;
+  final String languages;
+  final String bio;
+  final String targetStudent;
+  final String specialties;
+  final int price;
+  final XFile? avatar;
+  final XFile? video;
+
+  BecomeTutorRequest({
+    required this.name,
+    required this.country,
+    required DateTime birthday,
+    required this.interests,
+    required this.education,
+    required this.experience,
+    required this.profession,
+    required this.languages,
+    required this.bio,
+    required this.targetStudent,
+    required this.specialties,
+    required this.price,
+    this.avatar,
+    this.video,
+  }) {
+    this.birthday = DateFormat("yyyy-MM-dd").format(birthday);
+  }
+}
+
+Future<User> becomeTutor({
+  required String accessToken,
+  required BecomeTutorRequest data,
+}) async {
+  var url = Uri.https('sandbox.api.lettutor.com', '/tutor/register');
+
+  var request = MultipartRequest("PUT", url);
+  request.headers.addAll({
+    "Content-Type": "multipart/form-data",
+    "Authorization": "Bearer $accessToken",
+  });
+  request.fields.addAll({
+    'name': data.name,
+    'country': data.country,
+    'birthday': data.birthday,
+    'interests': data.interests,
+    'education': data.education,
+    'experience': data.experience,
+    'profession': data.profession,
+    'languages': data.languages,
+    'bio': data.bio,
+    'targetStudent': data.targetStudent,
+    'specialties': data.specialties,
+    'price': data.price.toString(),
+  });
+  if (data.avatar != null) {
+    request.files.add(await MultipartFile.fromPath(
+      'avatar',
+      data.avatar!.path,
+    ));
+  }
+  if (data.video != null) {
+    request.files.add(await MultipartFile.fromPath(
+      'video',
+      data.video!.path,
+    ));
+  }
+
+  var streamedResponse = await request.send();
+  var response = await Response.fromStream(streamedResponse);
+
+  if (response.statusCode == 200) {
+    return User.fromJson(json.decode(response.body));
+  } else {
+    throw (json.decode(response.body)['message']);
+  }
+}

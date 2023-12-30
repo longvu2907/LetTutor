@@ -43,6 +43,7 @@ class _TutorListPageState extends State<TutorListPage> {
   bool _isLoading = false;
   int _totalTime = 0;
   ScheduleEvent? _nextBooking;
+  Duration? _startIn;
 
   String transformMinutesToString(int minutes) {
     int hours = minutes ~/ 60;
@@ -102,6 +103,12 @@ class _TutorListPageState extends State<TutorListPage> {
   void initState() {
     super.initState();
 
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        _startIn = _nextBooking?.start.difference(DateTime.now());
+      });
+    });
+
     updateTutorList();
     getTotalTime();
     getUpcomingBooking();
@@ -139,7 +146,7 @@ class _TutorListPageState extends State<TutorListPage> {
                           .titleLarge
                           ?.copyWith(color: Colors.white),
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     _nextBooking != null
                         ? Column(
                             children: [
@@ -151,7 +158,7 @@ class _TutorListPageState extends State<TutorListPage> {
                                     ?.copyWith(color: Colors.white),
                               ),
                               Text(
-                                '(starts in 00:12:14)',
+                                '(Starts in ${_startIn.toString().split('.').first.padLeft(8, "0")})',
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyLarge

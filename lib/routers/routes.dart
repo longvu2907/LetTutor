@@ -7,7 +7,6 @@ import 'package:lettutor/pages/discover_page.dart';
 import 'package:lettutor/pages/history_page.dart';
 import 'package:lettutor/pages/home_page.dart';
 import 'package:lettutor/pages/lesson_detail_page.dart';
-import 'package:lettutor/pages/meeting_page.dart';
 import 'package:lettutor/pages/schedule_page.dart';
 import 'package:lettutor/pages/setting_page.dart';
 import 'package:lettutor/pages/tutor_list_page.dart';
@@ -21,7 +20,6 @@ Map<String, WidgetBuilder> routes = {
   'history': (context) => const HistoryPage(),
   'discover': (context) => const DiscoverPage(),
   'lesson-detail': (context) => const LessonDetailPage(),
-  'meeting': (context) => const MeetingPage(),
   'tutor-list': (context) => const TutorListPage(),
   'setting': (context) => const SettingPage(),
   'become-tutor': (context) => const BecomeTutorPage(),

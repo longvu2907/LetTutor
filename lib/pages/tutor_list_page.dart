@@ -22,7 +22,7 @@ class TutorListPage extends StatefulWidget {
 }
 
 class _TutorListPageState extends State<TutorListPage> {
-  TutorSearchQuery _query = TutorSearchQuery();
+  final TutorSearchQuery _query = TutorSearchQuery();
   String _selectedSpecialty = 'All';
   String? _nationality;
   List<User> _tutors = [];
@@ -252,11 +252,46 @@ class _TutorListPageState extends State<TutorListPage> {
                   ),
                   const SizedBox(height: 20),
 
-                  // Teacher list
                   Text(
                     'Recommended Tutors',
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
+                  // Pagination
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.arrow_back_ios),
+                        onPressed: _query.page <= 1
+                            ? null
+                            : () {
+                                setState(() {
+                                  _query.page = _query.page - 1;
+                                });
+
+                                updateTutorList();
+                              },
+                      ),
+                      Text(
+                        _query.page.toString(),
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.arrow_forward_ios),
+                        onPressed: _tutors.length < _query.perPage
+                            ? null
+                            : () {
+                                setState(() {
+                                  _query.page = _query.page + 1;
+                                });
+
+                                updateTutorList();
+                              },
+                      ),
+                    ],
+                  ),
+
+                  // Teacher list
                   const SizedBox(height: 10),
                   _isLoading
                       ? const Center(child: CircularProgressIndicator())
@@ -277,9 +312,6 @@ class _TutorListPageState extends State<TutorListPage> {
                                 "Sorry we can't find any tutor with this keywords",
                               ),
                             ),
-
-                  // Footer
-                  const SizedBox(height: 20),
                 ],
               ),
             ),

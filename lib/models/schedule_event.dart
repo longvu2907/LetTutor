@@ -42,21 +42,25 @@ class TutorInfo {
 
 class ScheduleEvent {
   final String id;
+  final String? scheduleId;
   final DateTime start;
   final DateTime end;
   final bool isBooked;
   final TutorInfo? tutor;
   final List<FeedbackModel> feedbacks;
   final String? studentRequest;
+  final String? studentMeetingLink;
 
   const ScheduleEvent({
     required this.id,
+    this.scheduleId,
     required this.start,
     required this.end,
     required this.isBooked,
     this.tutor,
     this.feedbacks = const [],
     this.studentRequest,
+    this.studentMeetingLink,
   });
 
   factory ScheduleEvent.fromJson(Map<String, dynamic> json) {
@@ -67,6 +71,7 @@ class ScheduleEvent {
 
     return ScheduleEvent(
       id: json['scheduleDetailId'] ?? json['scheduleDetails'][0]['id'],
+      scheduleId: json['id'],
       start: DateTime.fromMillisecondsSinceEpoch(startTimestamp),
       end: DateTime.fromMillisecondsSinceEpoch(endTimestamp),
       isBooked: json['isBooked'] ?? false,
@@ -80,6 +85,7 @@ class ScheduleEvent {
               .toList()
           : [],
       studentRequest: json['studentRequest'],
+      studentMeetingLink: json['tutorMeetingLink'],
     );
   }
 

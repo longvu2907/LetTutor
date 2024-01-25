@@ -1,10 +1,11 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
+import 'package:lettutor/config/env_config.dart';
 import 'package:lettutor/models/course.dart';
 
 Future<List<CourseModel>> getCourses({required String accessToken}) async {
-  var url = Uri.https('sandbox.api.lettutor.com', '/course', {
+  var url = Uri.https(EnvConfig.baseUrl, '/course', {
     "page": "1",
     "size": "100",
   });
@@ -29,7 +30,7 @@ Future<List<CourseModel>> getCourses({required String accessToken}) async {
 
 Future<CourseModel> getCourse(
     {required String accessToken, required String courseId}) async {
-  var url = Uri.https('sandbox.api.lettutor.com', '/course/$courseId');
+  var url = Uri.https(EnvConfig.baseUrl, '/course/$courseId');
 
   var response = await get(
     url,

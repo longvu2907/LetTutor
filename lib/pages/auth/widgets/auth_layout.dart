@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:lettutor/models/auth.dart';
+import 'package:lettutor/services/auth.dart';
 import 'package:lettutor/widgets/custom_app_bar.dart';
 import 'package:lettutor/widgets/outlined_icon_button.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 
 class AuthLayout extends StatelessWidget {
   final String title;
@@ -9,8 +15,9 @@ class AuthLayout extends StatelessWidget {
   final String? navigateTo;
   final String? navigateToText;
   final Widget child;
+  final _googleSignIn = GoogleSignIn();
 
-  const AuthLayout({
+  AuthLayout({
     super.key,
     required this.title,
     this.bottomText,
@@ -71,15 +78,11 @@ class AuthLayout extends StatelessWidget {
                       children: [
                         OutlinedIconButton(
                           icon: MdiIcons.facebook,
-                          onPressed: _onFacebookTap,
+                          onPressed: () => _onFacebookTap(context),
                         ),
                         OutlinedIconButton(
                           icon: MdiIcons.google,
-                          onPressed: _onGoogleTap,
-                        ),
-                        OutlinedIconButton(
-                          icon: Icons.phone_android,
-                          onPressed: _onPhoneTap,
+                          onPressed: () => _onGoogleTap(context),
                         ),
                       ],
                     )
@@ -128,15 +131,63 @@ class AuthLayout extends StatelessWidget {
     );
   }
 
-  void _onPhoneTap() {
-    print('phone');
+  void _onGoogleTap(BuildContext context) async {
+    try {
+      var authData = context.read<Auth>();
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+
+      final String? accessToken = googleAuth?.accessToken;
+
+      if (accessToken != null) {
+        try {
+          Auth auth = await loginByGoogle(
+            accessToken: accessToken,
+          );
+
+          authData.setAuth(auth);
+          Navigator.pushNamedAndRemoveUntil(context, 'home', (route) => false);
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error Login with Google: ${e.toString()}')),
+          );
+        }
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error Login with Google: ${e.toString()}')),
+      );
+    }
   }
 
-  void _onGoogleTap() {
-    print('google');
-  }
+  void _onFacebookTap(BuildContext context) async {
+    var authData = context.read<Auth>();
+    final result = await FacebookAuth.instance.login();
 
-  void _onFacebookTap() {
-    print('facebook');
+    if (result.status == LoginStatus.success) {
+      final accessToken = result.accessToken!.token;
+      try {
+        if (accessToken != null) {
+          try {
+            Auth auth = await loginByFacebook(
+              accessToken: accessToken,
+            );
+            authData.setAuth(auth);
+            Navigator.pushNamedAndRemoveUntil(
+                context, 'home', (route) => false);
+          } catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                  content: Text('Error Login with Google: ${e.toString()}')),
+            );
+          }
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error Login with Google: ${e.toString()}')),
+        );
+      }
+    }
   }
 }

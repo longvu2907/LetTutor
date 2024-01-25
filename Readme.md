@@ -16,6 +16,10 @@
 
 - Demo: https://drive.google.com/file/d/1JO5AtZShbQmbVnBxXmc8JyZucMGVbJt-/view?usp=sharing
 
+## Milestone 4:
+
+- Demo: https://drive.google.com/file/d/1eDnUqg76A5bhgiL0lQSOZXtnfw9_7cCX/view?usp=sharing
+
 <div float="left" align="center">
   <img src="assets/screenshots/login_page.png" alt="login page" width="250"/>
   <img src="assets/screenshots/register_page.png" alt="register page" width="250"/>

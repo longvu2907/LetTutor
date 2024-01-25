@@ -1,20 +1,66 @@
+import 'dart:io';
+
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:jitsi_meet_flutter_sdk/jitsi_meet_flutter_sdk.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:lettutor/models/auth.dart';
 import 'package:lettutor/models/schedule_event.dart';
+import 'package:lettutor/pages/meeting_page.dart';
+import 'package:lettutor/services/booking.dart';
 import 'package:lettutor/widgets/button.dart';
 import 'package:lettutor/widgets/custom_expansion_tile.dart';
+import 'package:lettutor/widgets/snackbar_notify.dart';
+import 'package:provider/provider.dart';
 
 class ScheduleCard extends StatelessWidget {
   final ScheduleEvent schedule;
+  final Function(bool cancelResult) onCancel;
+  final jitsiMeet = JitsiMeet();
 
-  const ScheduleCard({
+  ScheduleCard({
     super.key,
     required this.schedule,
+    required this.onCancel,
   });
+
+  void _joinMeeting(String room) async {
+    var options = JitsiMeetConferenceOptions(configOverrides: {
+      "startWithAudioMuted": true,
+      "startWithVideoMuted": true,
+      "subject": room,
+    }, room: room);
+    jitsiMeet.join(options);
+  }
+
+  bool _isTimeToJoin() {
+    final now = DateTime.now();
+    return now.isAfter(schedule.start) || now.isAtSameMomentAs(schedule.start);
+  }
 
   @override
   Widget build(BuildContext context) {
+    final String meetingToken =
+        schedule.studentMeetingLink?.split('token=')[1] ?? '';
+    Map<String, dynamic> jwtDecoded = JwtDecoder.decode(meetingToken);
+    final String room = jwtDecoded['room'];
+
+    Future<String> handleCancelClass() async {
+      final String token = context.read<Auth>().accessToken.toString();
+      try {
+        final result = await cancelBooked(
+          scheduleDetailIds: [schedule.scheduleId ?? ""],
+          accessToken: token,
+        );
+
+        return result;
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(errorMessage(e.toString()));
+        rethrow;
+      }
+    }
+
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
@@ -113,7 +159,45 @@ class ScheduleCard extends StatelessWidget {
               ),
               Button(
                 text: 'Cancel',
-                onPressed: () {},
+                onPressed: () async {
+                  final dialogResult = await showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Cancel class'),
+                      content: const Text('Are you sure to cancel this class?'),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, false),
+                          child: const Text('No'),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, true),
+                          child: const Text('Yes'),
+                        ),
+                      ],
+                    ),
+                  );
+                  if (dialogResult) {
+                    final result = await handleCancelClass();
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        content: Text(result),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              if (result == "Class Cancelled Successfully") {
+                                onCancel(true);
+                              }
+                              Navigator.pop(context, false);
+                            },
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                },
                 color: ButtonColor.danger,
                 type: ButtonType.outlined,
               )
@@ -131,8 +215,21 @@ class ScheduleCard extends StatelessWidget {
             children: [
               Button(
                 text: 'Go to meeting',
-                onPressed: () {
-                  Navigator.pushNamed(context, 'meeting');
+                onPressed: () async {
+                  if (_isTimeToJoin()) {
+                    _joinMeeting(room);
+                  } else {
+                    final result = await showWaitingRoomDialog(context);
+                    if (result) {
+                      _joinMeeting(room);
+                    } else {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {
+                          return MeetingPage(start: schedule.start);
+                        },
+                      ));
+                    }
+                  }
                 },
               ),
             ],
@@ -141,4 +238,25 @@ class ScheduleCard extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<bool> showWaitingRoomDialog(BuildContext context) async {
+  return await showDialog<bool>(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('It is not the time yet'),
+      content: const Text(
+          'Do you want to enter meeting room right now, or enter waiting room?'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context, false),
+          child: const Text('Waiting Room'),
+        ),
+        TextButton(
+          onPressed: () => Navigator.pop(context, true),
+          child: const Text('Meeting Room'),
+        ),
+      ],
+    ),
+  ).then((value) => value ?? false);
 }

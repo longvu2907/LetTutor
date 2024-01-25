@@ -16,10 +16,13 @@ class SchedulePage extends StatefulWidget {
 
 class _SchedulePageState extends State<SchedulePage> {
   List<ScheduleEvent> _bookings = [];
+  bool _isLoading = true;
+  final GetBookingQuery _query = GetBookingQuery();
 
   void getScheduleList() async {
     var res = await getBookings(
       accessToken: context.read<Auth>().accessToken.toString(),
+      bookingQuery: _query,
     );
 
     setState(() {
@@ -36,6 +39,9 @@ class _SchedulePageState extends State<SchedulePage> {
           successMessage('Refresh data success'),
         );
       }
+      setState(() {
+        _isLoading = false;
+      });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         errorMessage(e.toString()),
@@ -52,6 +58,10 @@ class _SchedulePageState extends State<SchedulePage> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      fetchData();
+    }
+
     return RefreshIndicator(
       onRefresh: () {
         fetchData(isRefresh: true);
@@ -82,6 +92,40 @@ class _SchedulePageState extends State<SchedulePage> {
                       fontWeight: FontWeight.bold,
                     ),
               ),
+              // Pagination
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back_ios),
+                    onPressed: _query.page <= 1
+                        ? null
+                        : () {
+                            setState(() {
+                              _query.page = _query.page - 1;
+                            });
+
+                            getScheduleList();
+                          },
+                  ),
+                  Text(
+                    _query.page.toString(),
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.arrow_forward_ios),
+                    onPressed: _bookings.length < _query.perPage
+                        ? null
+                        : () {
+                            setState(() {
+                              _query.page = _query.page + 1;
+                            });
+
+                            getScheduleList();
+                          },
+                  ),
+                ],
+              ),
 
               // Booking card list
               ListView.separated(
@@ -92,6 +136,13 @@ class _SchedulePageState extends State<SchedulePage> {
                 itemBuilder: (context, index) {
                   return ScheduleCard(
                     schedule: _bookings[index],
+                    onCancel: (value) {
+                      if (value) {
+                        setState(() {
+                          _isLoading = true;
+                        });
+                      }
+                    },
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {

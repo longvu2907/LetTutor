@@ -38,7 +38,7 @@ class TutorSearchQuery {
 
   TutorSearchQuery({
     this.page = 1,
-    this.perPage = 10,
+    this.perPage = 5,
     TutorFilters? filters,
     this.search,
   }) {

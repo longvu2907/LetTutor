@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:lettutor/config/env_config.dart';
 import 'package:lettutor/models/user.dart';
 
 class UpdateProfileRequest {
@@ -25,7 +26,7 @@ Future<User> updateProfile({
   required String accessToken,
   required UpdateProfileRequest data,
 }) async {
-  var url = Uri.https('sandbox.api.lettutor.com', '/user/info');
+  var url = Uri.https(EnvConfig.baseUrl, '/user/info');
 
   var response = await put(
     url,
@@ -52,7 +53,7 @@ Future<User> updateAvatar({
   required String accessToken,
   required XFile avatar,
 }) async {
-  var url = Uri.https('sandbox.api.lettutor.com', '/user/uploadAvatar');
+  var url = Uri.https(EnvConfig.baseUrl, '/user/uploadAvatar');
 
   var request = MultipartRequest("POST", url);
   request.headers.addAll({
@@ -114,7 +115,7 @@ Future<User> becomeTutor({
   required String accessToken,
   required BecomeTutorRequest data,
 }) async {
-  var url = Uri.https('sandbox.api.lettutor.com', '/tutor/register');
+  var url = Uri.https(EnvConfig.baseUrl, '/tutor/register');
 
   var request = MultipartRequest("PUT", url);
   request.headers.addAll({

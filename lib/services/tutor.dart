@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
+import 'package:lettutor/config/env_config.dart';
 import 'package:lettutor/models/review.dart';
 import 'package:lettutor/models/schedule_event.dart';
 import 'package:lettutor/models/tutor.dart';
@@ -58,7 +59,7 @@ Future<List<User>> getTutorList({
   TutorSearchQuery? query,
   required String accessToken,
 }) async {
-  var url = Uri.https('sandbox.api.lettutor.com', '/tutor/search');
+  var url = Uri.https(EnvConfig.baseUrl, '/tutor/search');
 
   var response = await post(
     url,
@@ -83,7 +84,7 @@ Future<Tutor> getTutor({
   required String tutorId,
   required String accessToken,
 }) async {
-  var url = Uri.https('sandbox.api.lettutor.com', '/tutor/$tutorId');
+  var url = Uri.https(EnvConfig.baseUrl, '/tutor/$tutorId');
 
   var response = await get(
     url,
@@ -104,7 +105,7 @@ Future<List<ReviewModel>> getReviews({
   required String tutorId,
   required String accessToken,
 }) async {
-  var url = Uri.https('sandbox.api.lettutor.com', '/feedback/v2/$tutorId');
+  var url = Uri.https(EnvConfig.baseUrl, '/feedback/v2/$tutorId');
 
   var response = await get(
     url,
@@ -129,7 +130,7 @@ Future<List<ScheduleEvent>> getSchedules({
   required String tutorId,
   required String accessToken,
 }) async {
-  var url = Uri.https('sandbox.api.lettutor.com', '/schedule', {
+  var url = Uri.https(EnvConfig.baseUrl, '/schedule', {
     'tutorId': tutorId,
     'page': "0",
   });
@@ -158,7 +159,7 @@ Future<void> bookSchedule({
   required String accessToken,
   required String scheduleId,
 }) async {
-  var url = Uri.https('sandbox.api.lettutor.com', '/booking');
+  var url = Uri.https(EnvConfig.baseUrl, '/booking');
 
   var response = await post(
     url,
@@ -182,7 +183,7 @@ Future<void> manageFavoriteTutor({
   required String tutorId,
   required String accessToken,
 }) async {
-  var url = Uri.https('sandbox.api.lettutor.com', '/user/manageFavoriteTutor');
+  var url = Uri.https(EnvConfig.baseUrl, '/user/manageFavoriteTutor');
 
   var response = await post(
     url,
